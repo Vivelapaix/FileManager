@@ -13,7 +13,7 @@ public class Main {
                 } catch(Exception e) {
                 }
 
-                FileManager manager = new FileManager();
+                FileManagerController manager = new FileManagerController();
                 JFrame frame = manager.createGUI();
 
                 frame.pack();

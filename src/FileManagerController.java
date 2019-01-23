@@ -1,3 +1,7 @@
+import file_table.FileTableModel;
+import file_tree.FileTreeCellRenderer;
+import file_tree.FileTreeModel;
+
 import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 import javax.swing.event.TreeSelectionEvent;
@@ -7,12 +11,21 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.File;
 import java.util.List;
 
-public class FileManager {
+public class FileManagerController {
 
     private FileManagerView view;
 
-    public JFrame createGUI() {
+    public FileManagerController() {
+        initView();
+    }
+
+    private void initView() {
         view = new FileManagerView();
+        view.getTree().setModel(new FileTreeModel(new DefaultMutableTreeNode()));
+        view.getTable().setModel(new FileTableModel());
+    }
+
+    public JFrame createGUI() {
 
         TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent tse){

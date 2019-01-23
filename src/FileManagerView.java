@@ -1,22 +1,12 @@
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.JTree;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.io.File;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class FileManagerView {
 
@@ -30,7 +20,6 @@ public class FileManagerView {
     private JPanel guiPanel;
 
     private JTree tree;
-    private DefaultTreeModel treeModel;
 
     private JTable table;
     private JProgressBar progressBar;
@@ -39,11 +28,16 @@ public class FileManagerView {
     private JTextField path;
     private JLabel date;
     private JLabel size;
+    private JRadioButton isDirectory;
+    private JRadioButton isFile;
+
+    private JButton openFile;
+    private JButton printFile;
+    private JButton editFile;
 
     private FileSystemView fileSystemView;
 
     public FileManagerView() {
-        fileSystemView = FileSystemView.getFileSystemView();
         buildFrame();
     }
 
@@ -52,6 +46,7 @@ public class FileManagerView {
         frame.setLayout(new BorderLayout(3, 3));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(frame.getSize());
+        fileSystemView = FileSystemView.getFileSystemView();
         frame.setContentPane(getGUI());
         //frame.setLocationByPlatform(true);
     }
@@ -60,40 +55,23 @@ public class FileManagerView {
         guiPanel = new JPanel(new BorderLayout(3,3));
         guiPanel.setBorder(new EmptyBorder(5,5,5,5));
 
-        guiPanel.add(createFileTreeScroll(), BorderLayout.CENTER);
+        JSplitPane splitPane = new JSplitPane(
+                JSplitPane.HORIZONTAL_SPLIT,
+                createFileTree(), createFileDetailsView());
+
+        guiPanel.add(splitPane, BorderLayout.CENTER);
 
         return guiPanel;
     }
 
-    private JTree createFileTree() {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-        treeModel = new DefaultTreeModel(root);
-
-        File[] roots = fileSystemView.getRoots();
-        for (File fileSystemRoot : roots) {
-            DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
-            root.add(node);
-
-            File[] files = fileSystemView.getFiles(fileSystemRoot, true);
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    node.add(new DefaultMutableTreeNode(file));
-                }
-            }
-        }
-
-        tree = new JTree(treeModel);
+    private JScrollPane createFileTree() {
+        tree = new JTree();
         tree.setRootVisible(false);
         tree.expandRow(0);
         tree.setVisibleRowCount(15);
         tree.getSelectionModel()
                 .setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-        return tree;
-    }
-
-    private JScrollPane createFileTreeScroll() {
-        tree = createFileTree();
         JScrollPane treeScroll = new JScrollPane(tree);
         Dimension d = treeScroll.getPreferredSize();
         treeScroll.setPreferredSize(
@@ -102,17 +80,12 @@ public class FileManagerView {
         return treeScroll;
     }
 
-    private JTable createTable() {
+    private JScrollPane createTable() {
         table = new JTable();
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setAutoCreateRowSorter(true);
         table.setShowVerticalLines(false);
 
-        return table;
-    }
-
-    private JScrollPane createTableScroll() {
-        table = createTable();
         JScrollPane tableScroll = new JScrollPane(table);
         Dimension d = tableScroll.getPreferredSize();
         tableScroll.setPreferredSize(
@@ -148,13 +121,47 @@ public class FileManagerView {
         size = new JLabel();
         values.add(size);
 
+        labels.add(new JLabel("Type", JLabel.TRAILING));
+        JPanel flags = new JPanel(new FlowLayout(FlowLayout.LEADING,4,0));
+        isDirectory = new JRadioButton("Directory");
+        isDirectory.setEnabled(false);
+        flags.add(isDirectory);
+        isFile = new JRadioButton("File");
+        isFile.setEnabled(false);
+        flags.add(isFile);
+        values.add(flags);
+
         return fileProperties;
+    }
+
+    private JToolBar createFileOperations() {
+        JToolBar toolBar = new JToolBar();
+        toolBar.setFloatable(false);
+
+        openFile = new JButton("Open");
+        openFile.setMnemonic('o');
+        toolBar.add(openFile);
+
+        editFile = new JButton("Edit");
+        editFile.setMnemonic('e');
+        toolBar.add(editFile);
+
+        printFile = new JButton("Print");
+        printFile.setMnemonic('p');
+        toolBar.add(printFile);
+
+        return toolBar;
     }
 
     private JPanel createFileDetailsView() {
         JPanel detailView = new JPanel(new BorderLayout(3,3));
+        JPanel fileView = new JPanel(new BorderLayout(3,3));
 
-        detailView.add(createTableScroll(), BorderLayout.CENTER);
+        detailView.add(createTable(), BorderLayout.CENTER);
+
+        fileView.add(createFileOperations(), BorderLayout.NORTH);
+        fileView.add(createFileProperties(), BorderLayout.CENTER);
+        detailView.add(fileView, BorderLayout.SOUTH);
 
         return  detailView;
     }
@@ -163,15 +170,55 @@ public class FileManagerView {
         return frame;
     }
 
+    public JPanel getGuiPanel() {
+        return guiPanel;
+    }
+
     public JTree getTree() {
         return tree;
     }
 
-    public JPanel getGui() {
-        return guiPanel;
-    }
-
     public JTable getTable() {
         return table;
+    }
+
+    public JProgressBar getProgressBar() {
+        return progressBar;
+    }
+
+    public JLabel getFileName() {
+        return fileName;
+    }
+
+    public JTextField getPath() {
+        return path;
+    }
+
+    public JLabel getDate() {
+        return date;
+    }
+
+    public JLabel getSize() {
+        return size;
+    }
+
+    public JRadioButton getIsDirectory() {
+        return isDirectory;
+    }
+
+    public JRadioButton getIsFile() {
+        return isFile;
+    }
+
+    public JButton getOpenFile() {
+        return openFile;
+    }
+
+    public JButton getPrintFile() {
+        return printFile;
+    }
+
+    public JButton getEditFile() {
+        return editFile;
     }
 }

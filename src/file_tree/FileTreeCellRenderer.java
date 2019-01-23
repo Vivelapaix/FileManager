@@ -1,3 +1,5 @@
+package file_tree;
+
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
@@ -8,11 +10,11 @@ import java.awt.Component;
 import java.io.File;
 
 
-class FileTreeCellRenderer extends DefaultTreeCellRenderer {
+public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
 
     private JLabel label;
 
-    FileTreeCellRenderer() {
+    public FileTreeCellRenderer() {
         label = new JLabel();
         label.setOpaque(true);
     }
