@@ -1,6 +1,8 @@
 import file_table.FileTableModel;
 import file_tree.FileTreeCellRenderer;
 import file_tree.FileTreeModel;
+import preview.Preview;
+import preview.PreviewFactory;
 
 import javax.swing.Icon;
 import javax.swing.JFrame;
@@ -13,6 +15,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.Desktop;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +25,10 @@ public class FileManagerController {
 
     private FileManagerView view;
 
+    private PreviewFactory previewFactory;
+
+    private File currentFile;
+
     private FileSystemView fileSystemView;
     private ListSelectionListener listSelectionListener;
     private Desktop desktop;
@@ -28,6 +36,7 @@ public class FileManagerController {
     public FileManagerController() {
         fileSystemView = FileSystemView.getFileSystemView();
         desktop = Desktop.getDesktop();
+        previewFactory = new PreviewFactory();
         initView();
     }
 
@@ -49,6 +58,7 @@ public class FileManagerController {
                         (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
                 showChildren(node);
                 setFileDetails((File)node.getUserObject());
+                previewEntry(currentFile);
             }
         };
 
@@ -59,11 +69,47 @@ public class FileManagerController {
             @Override
             public void valueChanged(ListSelectionEvent lse) {
                 int row = view.getTable().getSelectionModel().getLeadSelectionIndex();
-                setFileDetails( ((FileTableModel)view.getTable().getModel()).getFile(row) );
+                setFileDetails(((FileTableModel)view.getTable().getModel()).getFile(row));
+                previewEntry(currentFile);
             }
         };
+        view.getTable().getSelectionModel().addListSelectionListener(listSelectionListener);
+
+        view.getOpenFile().addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    desktop.open(currentFile);
+                } catch(Throwable t) {
+                }
+                view.getGuiPanel().repaint();
+            }
+        });
+
+        view.getEditFile().addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    desktop.edit(currentFile);
+                } catch(Throwable t) {
+                }
+            }
+        });
+
+        view.getPrintFile().addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    desktop.print(currentFile);
+                } catch(Throwable t) {
+                }
+            }
+        });
 
         return view.getFrame();
+    }
+
+    private void previewEntry(File file) {
+        Preview preview = previewFactory.createPreview(view, file);
+        preview.show();
+        view.getPreview().repaint();
     }
 
     private void showChildren(final DefaultMutableTreeNode node) {
@@ -103,7 +149,7 @@ public class FileManagerController {
     }
 
     private void setFileDetails(File file) {
-        //currentFile = file;
+        currentFile = file;
         Icon icon = fileSystemView.getSystemIcon(file);
         view.getFileName().setIcon(icon);
         view.getFileName().setText(fileSystemView.getSystemDisplayName(file));

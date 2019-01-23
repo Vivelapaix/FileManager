@@ -1,25 +1,12 @@
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
-import javax.swing.JTree;
-import javax.swing.ListSelectionModel;
+import preview.ImagePanel;
+import preview.PreviewView;
+
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.TreeSelectionModel;
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 
-public class FileManagerView {
+public class FileManagerView implements PreviewView {
 
     private static final String APP_NAME = "File Manager";
     private static final String FILE_LABEL = "File";
@@ -33,7 +20,12 @@ public class FileManagerView {
     private JTree tree;
 
     private JTable table;
-    private JProgressBar progressBar;
+
+    private JPanel preview;
+    private JLabel noPreview;
+    private JTextArea textPreview;
+    private ImagePanel imagePreview;
+    private JScrollPane textPreviewScroll;
 
     private JLabel fileName;
     private JTextField path;
@@ -64,9 +56,13 @@ public class FileManagerView {
         guiPanel = new JPanel(new BorderLayout(3,3));
         guiPanel.setBorder(new EmptyBorder(5,5,5,5));
 
-        JSplitPane splitPane = new JSplitPane(
+        JSplitPane sp = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
                 createFileTree(), createFileDetailsView());
+        JSplitPane splitPane = new JSplitPane(
+                JSplitPane.HORIZONTAL_SPLIT,
+                sp,
+                createPreview());
 
         guiPanel.add(splitPane, BorderLayout.CENTER);
 
@@ -89,7 +85,7 @@ public class FileManagerView {
         return treeScroll;
     }
 
-    private JScrollPane createTable() {
+    private JScrollPane createFileTable() {
         table = new JTable();
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setAutoCreateRowSorter(true);
@@ -101,6 +97,12 @@ public class FileManagerView {
                 new Dimension((int)d.getWidth(), (int)d.getHeight()/2));
 
         return tableScroll;
+    }
+
+    public void hidePreviews() {
+        noPreview.setVisible(false);
+        textPreviewScroll.setVisible(false);
+        imagePreview.setVisible(false);
     }
 
     private JPanel createFileProperties() {
@@ -166,13 +168,43 @@ public class FileManagerView {
         JPanel detailView = new JPanel(new BorderLayout(3,3));
         JPanel fileView = new JPanel(new BorderLayout(3,3));
 
-        detailView.add(createTable(), BorderLayout.CENTER);
+        detailView.add(createFileTable(), BorderLayout.CENTER);
 
         fileView.add(createFileOperations(), BorderLayout.NORTH);
         fileView.add(createFileProperties(), BorderLayout.CENTER);
         detailView.add(fileView, BorderLayout.SOUTH);
 
         return  detailView;
+    }
+
+    private JPanel createPreview() {
+        preview = new JPanel(new BorderLayout());
+        preview.setBorder(BorderFactory.createLineBorder(Color.gray));
+        preview.setPreferredSize(new Dimension(600, 600));
+
+        noPreview = new JLabel();
+        noPreview.setText("NO PREVIEW AVAILABLE");
+
+        textPreview = new JTextArea();
+        textPreview.setPreferredSize(new Dimension(500, 550));
+        textPreviewScroll = new JScrollPane(
+                textPreview,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+        preview.add(noPreview, BorderLayout.WEST);
+        noPreview.setVisible(false);
+
+        preview.add(textPreviewScroll, BorderLayout.NORTH);
+        textPreviewScroll.setVisible(false);
+
+        imagePreview = new ImagePanel();
+        imagePreview.setImageDimension(500, 500);
+        imagePreview.setImageMargins(50, 50);
+        preview.add(imagePreview, BorderLayout.CENTER);
+        imagePreview.setVisible(false);
+
+        return preview;
     }
 
     public JFrame getFrame() {
@@ -189,10 +221,6 @@ public class FileManagerView {
 
     public JTable getTable() {
         return table;
-    }
-
-    public JProgressBar getProgressBar() {
-        return progressBar;
     }
 
     public JLabel getFileName() {
@@ -229,5 +257,25 @@ public class FileManagerView {
 
     public JButton getEditFile() {
         return editFile;
+    }
+
+    public JScrollPane getTextPreviewScroll() {
+        return textPreviewScroll;
+    }
+
+    public JPanel getPreview() {
+        return preview;
+    }
+
+    public JLabel getNoPreview() {
+        return noPreview;
+    }
+
+    public JTextArea getTextPreview() {
+        return textPreview;
+    }
+
+    public ImagePanel getImagePreview() {
+        return imagePreview;
     }
 }
