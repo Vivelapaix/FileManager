@@ -1,11 +1,16 @@
 package file_table;
 
-import javax.swing.table.DefaultTableModel;
+import javax.swing.ImageIcon;
+import javax.swing.filechooser.FileSystemView;
+import javax.swing.table.AbstractTableModel;
+import java.io.File;
 import java.util.Date;
 
-public class FileTableModel extends DefaultTableModel {
+public class FileTableModel extends AbstractTableModel {
 
-    private static final String[] HEADERS = {
+    private File[] files;
+    private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+    private String[] columns = {
             "Icon",
             "File",
             "Path/name",
@@ -14,24 +19,71 @@ public class FileTableModel extends DefaultTableModel {
     };
 
     public FileTableModel() {
-        super(HEADERS, 0);
+        this(new File[0]);
     }
 
-    @Override
-    public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
+    public FileTableModel(File[] files) {
+        this.files = files;
+    }
+
+    public Object getValueAt(int row, int column) {
+        File file = files[row];
+        switch (column) {
             case 0:
-                return String.class;
+                return fileSystemView.getSystemIcon(file);
             case 1:
-                return Date.class;
+                return fileSystemView.getSystemDisplayName(file);
             case 2:
-                return Long.class;
+                return file.getPath();
+            case 3:
+                return file.length();
+            case 4:
+                return file.lastModified();
             default:
-                throw new IllegalArgumentException();
+                System.err.println("Logic Error");
         }
+        return "";
     }
 
-    @Override
+    public int getColumnCount() {
+        return columns.length;
+    }
+
+    public Class<?> getColumnClass(int column) {
+        switch (column) {
+            case 0:
+                return ImageIcon.class;
+            case 3:
+                return Long.class;
+            case 4:
+                return Date.class;
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                return Boolean.class;
+        }
+        return String.class;
+    }
+
+    public String getColumnName(int column) {
+        return columns[column];
+    }
+
+    public int getRowCount() {
+        return files.length;
+    }
+
+    public File getFile(int row) {
+        return files[row];
+    }
+
+    public void setFiles(File[] files) {
+        this.files = files;
+        fireTableDataChanged();
+    }
+
     public boolean isCellEditable(int row, int column) {
         return false;
     }
