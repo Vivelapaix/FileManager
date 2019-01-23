@@ -2,7 +2,7 @@ package preview;
 
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.SwingWorker;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 public class ImagePreview implements Preview {
     

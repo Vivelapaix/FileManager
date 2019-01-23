@@ -1,8 +1,10 @@
 package preview;
 
-import preview.ImagePanel;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public interface PreviewView {
 

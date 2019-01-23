@@ -1,7 +1,7 @@
 package preview;
 
 
-import javax.swing.*;
+import javax.swing.JLabel;
 
 public class EmptyPreview implements Preview {
     
