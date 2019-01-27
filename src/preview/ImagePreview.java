@@ -1,11 +1,11 @@
 package preview;
 
 
-import Constant.Constants;
+import utils.Constants;
 
 import javax.imageio.ImageIO;
 import javax.swing.SwingWorker;
-import java.awt.*;
+import java.awt.CardLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,9 +19,9 @@ import java.util.Set;
 
 public class ImagePreview implements Preview {
     
-    private static final List<String> ACCEPTED_EXTENSIONS_LIST = Arrays.asList("png", "jpg", "jpeg");
+    private static final List<String> EXTENSIONS = Arrays.asList("png", "jpg", "jpeg");
     
-    private static final Set<String> ACCEPTED_EXTENSIONS = new HashSet<String>(ACCEPTED_EXTENSIONS_LIST);
+    private static final Set<String> IMAGE_EXTENSIONS = new HashSet<String>(EXTENSIONS);
     
     private final PreviewView view;
     
@@ -37,12 +37,13 @@ public class ImagePreview implements Preview {
 
     public void show() {
 
-        //Loading preview entries in a separate thread as it can be time consuming
         SwingWorker<BufferedImage, Object> previewLoader = new SwingWorker<BufferedImage, Object>() {
 
             @Override
             public BufferedImage doInBackground() {
                 try {
+                    view.hidePreviews();
+                    view.getNoPreview().setText(Constants.FILE_LOADING_LABEL);
                     return ImageIO.read(getInputStream());
                 } catch (IOException e) {
                 }
@@ -52,6 +53,7 @@ public class ImagePreview implements Preview {
             @Override
             protected void done() {
                 view.hidePreviews();
+                view.getNoPreview().setText(Constants.NO_PREVIEW_AVAILABLE_LABEL);
                 panel.setVisible(true);
                 ((CardLayout)view.getPreview().getLayout())
                         .show(view.getPreview(), Constants.IMAGE_PREVIEW_LABEL);
@@ -72,7 +74,7 @@ public class ImagePreview implements Preview {
         return null;
     }
 
-    public static boolean acceptsEntryExtension(String extension) {
-        return ACCEPTED_EXTENSIONS.contains(extension);
+    public static boolean acceptsExtension(String extension) {
+        return IMAGE_EXTENSIONS.contains(extension);
     }
 }

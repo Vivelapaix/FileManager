@@ -17,6 +17,6 @@ public interface PreviewView {
     JTextArea getTextPreview();
 
     ImagePanel getImagePreview();
-    
+
     void hidePreviews();
 }

@@ -1,4 +1,4 @@
-import Constant.Constants;
+import utils.Constants;
 import preview.ImagePanel;
 import preview.PreviewView;
 
@@ -26,13 +26,18 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
-public class FileManagerView implements PreviewView {
+import static utils.Constants.APP_NAME;
+import static utils.Constants.DIRECTORY_LABEL;
+import static utils.Constants.EDIT_LABEL;
+import static utils.Constants.FILE_LABEL;
+import static utils.Constants.MODIFIED_LABEL;
+import static utils.Constants.OPEN_LABEL;
+import static utils.Constants.PATH_LABEL;
+import static utils.Constants.PRINT_LABEL;
+import static utils.Constants.SIZE_LABEL;
+import static utils.Constants.TYPE_LABEL;
 
-    private static final String APP_NAME = "File Manager";
-    private static final String FILE_LABEL = "File";
-    private static final String PATH_LABEL = "Path";
-    private static final String MODIFIED_LABEL = "Modified";
-    private static final String SIZE_LABEL = "Size";
+public class FileManagerView implements PreviewView {
 
     private JFrame frame;
     private JPanel guiPanel;
@@ -69,7 +74,6 @@ public class FileManagerView implements PreviewView {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(1, 1));
         frame.setContentPane(getGUI());
-        //frame.setLocationByPlatform(true);
     }
 
     private Container getGUI() {
@@ -128,12 +132,6 @@ public class FileManagerView implements PreviewView {
         return tableScroll;
     }
 
-    public void hidePreviews() {
-        noPreview.setVisible(false);
-        textPreviewScroll.setVisible(false);
-        imagePreview.setVisible(false);
-    }
-
     private JPanel createFileProperties() {
         JPanel fileProperties = new JPanel(new BorderLayout(4,2));
         fileProperties.setBorder(new EmptyBorder(0,6,0,6));
@@ -161,12 +159,12 @@ public class FileManagerView implements PreviewView {
         size = new JLabel();
         values.add(size);
 
-        labels.add(new JLabel("Type", JLabel.TRAILING));
+        labels.add(new JLabel(TYPE_LABEL, JLabel.TRAILING));
         JPanel flags = new JPanel(new FlowLayout(FlowLayout.LEADING,4,0));
-        isDirectory = new JRadioButton("Directory");
+        isDirectory = new JRadioButton(DIRECTORY_LABEL);
         isDirectory.setEnabled(false);
         flags.add(isDirectory);
-        isFile = new JRadioButton("File");
+        isFile = new JRadioButton(FILE_LABEL);
         isFile.setEnabled(false);
         flags.add(isFile);
         values.add(flags);
@@ -178,19 +176,25 @@ public class FileManagerView implements PreviewView {
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
 
-        openFile = new JButton("Open");
+        openFile = new JButton(OPEN_LABEL);
         openFile.setMnemonic('o');
         toolBar.add(openFile);
 
-        editFile = new JButton("Edit");
+        editFile = new JButton(EDIT_LABEL);
         editFile.setMnemonic('e');
         toolBar.add(editFile);
 
-        printFile = new JButton("Print");
+        printFile = new JButton(PRINT_LABEL);
         printFile.setMnemonic('p');
         toolBar.add(printFile);
 
         return toolBar;
+    }
+
+    public void disableFileOperations() {
+        openFile.setEnabled(false);
+        editFile.setEnabled(false);
+        printFile.setEnabled(false);
     }
 
     private JPanel createFileDetailsView() {
@@ -213,7 +217,6 @@ public class FileManagerView implements PreviewView {
         preview.setPreferredSize(new Dimension(200, (int)d.getHeight()));
 
         noPreview = new JLabel();
-        noPreview.setText("NO PREVIEW AVAILABLE");
         noPreview.setHorizontalAlignment(JLabel.CENTER);
         noPreview.setVisible(false);
 
@@ -234,6 +237,12 @@ public class FileManagerView implements PreviewView {
         preview.add(imagePreview, Constants.IMAGE_PREVIEW_LABEL);
 
         return preview;
+    }
+
+    public void hidePreviews() {
+        noPreview.setVisible(false);
+        textPreviewScroll.setVisible(false);
+        imagePreview.setVisible(false);
     }
 
     public JFrame getFrame() {
