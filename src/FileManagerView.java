@@ -18,7 +18,13 @@ import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.TreeSelectionModel;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
 public class FileManagerView implements PreviewView {
 
@@ -61,7 +67,6 @@ public class FileManagerView implements PreviewView {
         frame = new JFrame(APP_NAME);
         frame.setLayout(new BorderLayout(3, 3));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //frame.setMinimumSize(frame.getSize());
         frame.setMinimumSize(new Dimension(1, 1));
         frame.setContentPane(getGUI());
         //frame.setLocationByPlatform(true);
@@ -74,10 +79,13 @@ public class FileManagerView implements PreviewView {
         JSplitPane sp = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
                 createFileTreeView(), createFileDetailsView());
+        sp.setResizeWeight(0.4);
+
         JSplitPane splitPane = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
                 sp,
                 createPreview());
+        splitPane.setResizeWeight(0.6);
 
         guiPanel.add(splitPane, BorderLayout.CENTER);
 
@@ -198,47 +206,11 @@ public class FileManagerView implements PreviewView {
         return  detailView;
     }
 
-//    private JPanel createPreview2() {
-//        preview = new JPanel(new BorderLayout(3,3));
-//        preview.setBorder(BorderFactory.createLineBorder(Color.gray));
-//        preview.setPreferredSize(new Dimension(200, 600));
-//
-//        noPreview = new JLabel();
-//        noPreview.setText("NO PREVIEW AVAILABLE");
-//
-//        textPreview = new JTextArea();
-//        textPreview.setPreferredSize(new Dimension(500, 550));
-//        textPreview.setWrapStyleWord(true);
-//        textPreview.setLineWrap(true);
-//        textPreview.setEditable(false);
-//        textPreviewScroll = new JScrollPane(textPreview,
-//                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-//                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-//
-//        Dimension d = textPreviewScroll.getPreferredSize();
-//        textPreviewScroll.setPreferredSize(
-//                new Dimension((int)d.getHeight(), (int)d.getHeight()));
-//
-//        preview.add(noPreview, BorderLayout.EAST);
-//        noPreview.setVisible(false);
-//
-//        //preview.add(textPreviewScroll, BorderLayout.NORTH);
-//        preview.add(textPreviewScroll, BorderLayout.WEST);
-//        textPreviewScroll.setVisible(false);
-//
-//        imagePreview = new ImagePanel();
-//        imagePreview.setImageDimension(300, 300);
-//        imagePreview.setImageMargins(50, 50);
-//        preview.add(imagePreview, BorderLayout.CENTER);
-//        imagePreview.setVisible(false);
-//
-//        return preview;
-//    }
-
     private JPanel createPreview() {
         preview = new JPanel(new CardLayout(3, 3));
         preview.setBorder(BorderFactory.createLineBorder(Color.gray));
-        //preview.setPreferredSize(new Dimension(200, 600));
+        Dimension d = preview.getPreferredSize();
+        preview.setPreferredSize(new Dimension(200, (int)d.getHeight()));
 
         noPreview = new JLabel();
         noPreview.setText("NO PREVIEW AVAILABLE");
@@ -246,7 +218,6 @@ public class FileManagerView implements PreviewView {
         noPreview.setVisible(false);
 
         textPreview = new JTextArea();
-        //textPreview.setPreferredSize(new Dimension(500, 550));
         textPreview.setWrapStyleWord(true);
         textPreview.setLineWrap(true);
         textPreview.setEditable(false);
@@ -255,12 +226,8 @@ public class FileManagerView implements PreviewView {
                 JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         textPreviewScroll.setVisible(false);
 
-
         imagePreview = new ImagePanel();
-        imagePreview.setImageDimension(300, 300);
-        imagePreview.setImageMargins(50, 50);
         imagePreview.setVisible(false);
-
 
         preview.add(noPreview, Constants.NO_PREVIEW_LABEL);
         preview.add(textPreviewScroll, Constants.TEXT_PREVIEW_LABEL);

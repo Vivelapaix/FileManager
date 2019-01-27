@@ -53,12 +53,14 @@ public class FileManagerController {
     public JFrame createGUI() {
 
         TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
+            @Override
             public void valueChanged(TreeSelectionEvent tse){
                 DefaultMutableTreeNode node =
                         (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
                 showChildren(node);
-                setFileDetails((File)node.getUserObject());
-                previewEntry(currentFile);
+                currentFile = (File)node.getUserObject();
+                setFileDetails(currentFile);
+                previewFile(currentFile);
             }
         };
 
@@ -68,9 +70,13 @@ public class FileManagerController {
         listSelectionListener = new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent lse) {
-                int row = view.getTable().getSelectionModel().getLeadSelectionIndex();
-                setFileDetails(((FileTableModel)view.getTable().getModel()).getFile(row));
-                previewEntry(currentFile);
+                File selectedFile = getSelectedFile();
+
+                if (selectedFile != null && selectedFile != currentFile) {
+                    currentFile = selectedFile;
+                    setFileDetails(currentFile);
+                    previewFile(currentFile);
+                }
             }
         };
         view.getTable().getSelectionModel().addListSelectionListener(listSelectionListener);
@@ -106,7 +112,19 @@ public class FileManagerController {
         return view.getFrame();
     }
 
-    private void previewEntry(File file) {
+    private File getSelectedFile() {
+        int selectedRow = view.getTable().getSelectionModel().getLeadSelectionIndex();
+        int rowCount = view.getTable().getModel().getRowCount();
+
+        if (selectedRow >= 0 && selectedRow < rowCount) {
+            int modelRow = view.getTable().convertRowIndexToModel(selectedRow);
+            return ((FileTableModel)view.getTable().getModel()).getFile(modelRow);
+        }
+
+        return null;
+    }
+
+    private void previewFile(File file) {
         Preview preview = previewFactory.createPreview(view, file);
         preview.show();
         view.getPreview().repaint();
@@ -149,7 +167,6 @@ public class FileManagerController {
     }
 
     private void setFileDetails(File file) {
-        currentFile = file;
         Icon icon = fileSystemView.getSystemIcon(file);
         view.getFileName().setIcon(icon);
         view.getFileName().setText(fileSystemView.getSystemDisplayName(file));
