@@ -1,33 +1,13 @@
 package preview;
 
-import javax.swing.JPanel;
+import javax.swing.JLabel;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-public class ImagePanel extends JPanel {
 
-    private int imageWidth;
-
-    private int imageHeight;
-
-    private int marginLeft;
-
-    private int marginTop;
+public class ImagePanel extends JLabel {
 
     private BufferedImage image;
-
-    public ImagePanel() {
-    }
-
-    public void setImageDimension(int width, int height) {
-        this.imageWidth = width;
-        this.imageHeight = height;
-    }
-
-    public void setImageMargins(int left, int top) {
-        this.marginLeft = left;
-        this.marginTop = top;
-    }
 
     public void setImage(BufferedImage image) {
         this.image = image;
@@ -35,7 +15,39 @@ public class ImagePanel extends JPanel {
     }
 
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(image, marginLeft, marginTop, imageWidth, imageHeight, null);
+        int imgWidth = image.getWidth(null);
+        int imgHeight = image.getHeight(null);
+        int labelWidth = getWidth();
+        int labelHeight = getHeight();
+
+        int x1 = 0;
+        int y1 = 0;
+        int x2 = 0;
+        int y2 = 0;
+
+        if (imgWidth < labelWidth && imgHeight < labelHeight) {
+            x1 = (labelWidth - imgWidth)  / 2;
+            y1 = (labelHeight - imgHeight) / 2;
+            x2 = x1 + imgWidth;
+            y2 = y1 + imgHeight;
+
+        } else {
+            double imgAspect = (double) imgHeight / imgWidth;
+            double labelAspect = (double) labelHeight / labelWidth;
+
+            if (labelAspect > imgAspect) {
+                y1 = labelHeight;
+                labelHeight = (int)(labelWidth * imgAspect);
+                y1 = (y1 - labelHeight) / 2;
+            } else {
+                x1 = labelWidth;
+                labelWidth = (int) (labelHeight / imgAspect);
+                x1 = (x1 - labelWidth) / 2;
+            }
+            x2 = x1 + labelWidth;
+            y2 = y1 + labelHeight;
+        }
+
+        g.drawImage(image, x1, y1, x2, y2, 0, 0, imgWidth, imgHeight, null);
     }
 }

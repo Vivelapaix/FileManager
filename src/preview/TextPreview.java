@@ -1,9 +1,12 @@
 package preview;
 
 
+import Constant.Constants;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
+import java.awt.*;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,6 +59,8 @@ public class TextPreview implements Preview {
             protected void done() {
                 view.hidePreviews();
                 textPreviewScrollPane.setVisible(true);
+                ((CardLayout)view.getPreview().getLayout())
+                        .show(view.getPreview(), Constants.TEXT_PREVIEW_LABEL);
                 try {
                     textPreview.setText(get());
                 } catch (Exception e) {

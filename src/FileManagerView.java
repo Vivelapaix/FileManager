@@ -1,3 +1,4 @@
+import Constant.Constants;
 import preview.ImagePanel;
 import preview.PreviewView;
 
@@ -18,6 +19,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -65,7 +67,7 @@ public class FileManagerView implements PreviewView {
         frame = new JFrame(APP_NAME);
         frame.setLayout(new BorderLayout(3, 3));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(frame.getSize());
+        frame.setMinimumSize(new Dimension(1, 1));
         frame.setContentPane(getGUI());
         //frame.setLocationByPlatform(true);
     }
@@ -76,11 +78,14 @@ public class FileManagerView implements PreviewView {
 
         JSplitPane sp = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
-                createFileTree(), createFileDetailsView());
+                createFileTreeView(), createFileDetailsView());
+        sp.setResizeWeight(0.4);
+
         JSplitPane splitPane = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
                 sp,
                 createPreview());
+        splitPane.setResizeWeight(0.6);
 
         guiPanel.add(splitPane, BorderLayout.CENTER);
 
@@ -97,10 +102,16 @@ public class FileManagerView implements PreviewView {
 
         JScrollPane treeScroll = new JScrollPane(tree);
         Dimension d = treeScroll.getPreferredSize();
-        treeScroll.setPreferredSize(
-                new Dimension(200, (int)d.getHeight()));
+        treeScroll.setPreferredSize(new Dimension(200, (int)d.getHeight()));
 
         return treeScroll;
+    }
+
+    private JPanel createFileTreeView() {
+        JPanel treeView = new JPanel(new BorderLayout(3,3));
+        treeView.add(createFileTree(), BorderLayout.CENTER);
+
+        return treeView;
     }
 
     private JScrollPane createFileTable() {
@@ -196,31 +207,31 @@ public class FileManagerView implements PreviewView {
     }
 
     private JPanel createPreview() {
-        preview = new JPanel(new BorderLayout());
+        preview = new JPanel(new CardLayout(3, 3));
         preview.setBorder(BorderFactory.createLineBorder(Color.gray));
-        preview.setPreferredSize(new Dimension(600, 600));
+        Dimension d = preview.getPreferredSize();
+        preview.setPreferredSize(new Dimension(200, (int)d.getHeight()));
 
         noPreview = new JLabel();
         noPreview.setText("NO PREVIEW AVAILABLE");
-
-        textPreview = new JTextArea();
-        textPreview.setPreferredSize(new Dimension(500, 550));
-        textPreviewScroll = new JScrollPane(
-                textPreview,
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-
-        preview.add(noPreview, BorderLayout.WEST);
+        noPreview.setHorizontalAlignment(JLabel.CENTER);
         noPreview.setVisible(false);
 
-        preview.add(textPreviewScroll, BorderLayout.NORTH);
+        textPreview = new JTextArea();
+        textPreview.setWrapStyleWord(true);
+        textPreview.setLineWrap(true);
+        textPreview.setEditable(false);
+        textPreviewScroll = new JScrollPane(textPreview,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         textPreviewScroll.setVisible(false);
 
         imagePreview = new ImagePanel();
-        imagePreview.setImageDimension(500, 500);
-        imagePreview.setImageMargins(50, 50);
-        preview.add(imagePreview, BorderLayout.CENTER);
         imagePreview.setVisible(false);
+
+        preview.add(noPreview, Constants.NO_PREVIEW_LABEL);
+        preview.add(textPreviewScroll, Constants.TEXT_PREVIEW_LABEL);
+        preview.add(imagePreview, Constants.IMAGE_PREVIEW_LABEL);
 
         return preview;
     }

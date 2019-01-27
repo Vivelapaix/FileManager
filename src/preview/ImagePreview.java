@@ -1,8 +1,11 @@
 package preview;
 
 
+import Constant.Constants;
+
 import javax.imageio.ImageIO;
 import javax.swing.SwingWorker;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,6 +53,8 @@ public class ImagePreview implements Preview {
             protected void done() {
                 view.hidePreviews();
                 panel.setVisible(true);
+                ((CardLayout)view.getPreview().getLayout())
+                        .show(view.getPreview(), Constants.IMAGE_PREVIEW_LABEL);
                 try {
                     panel.setImage(get());
                 } catch (Exception e) {
