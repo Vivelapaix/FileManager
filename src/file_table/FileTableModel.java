@@ -40,7 +40,7 @@ public class FileTableModel extends AbstractTableModel {
             case 4:
                 return file.lastModified();
             default:
-                System.err.println("Logic Error");
+                System.err.println("Error");
         }
         return "";
     }
