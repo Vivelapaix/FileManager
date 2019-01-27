@@ -51,6 +51,7 @@ public class TextPreview implements Preview {
                 try {
                     return new String(readContent(), DEFAULT_ENCODING);
                 } catch (Exception e) {
+                    view.getFileStatus().setVisible(true);
                 }
                 return null;
             }
@@ -64,6 +65,7 @@ public class TextPreview implements Preview {
                 try {
                     textPreview.setText(get());
                 } catch (Exception e) {
+                    view.getFileStatus().setVisible(true);
                 }
             }
         };
@@ -82,7 +84,7 @@ public class TextPreview implements Preview {
             return bytes;
 
         } catch (IOException e) {
-
+            view.getFileStatus().setVisible(true);
         }
 
         return null;

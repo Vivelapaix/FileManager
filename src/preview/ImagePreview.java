@@ -46,6 +46,7 @@ public class ImagePreview implements Preview {
                     view.getNoPreview().setText(Constants.FILE_LOADING_LABEL);
                     return ImageIO.read(getInputStream());
                 } catch (IOException e) {
+                    view.getFileStatus().setVisible(true);
                 }
                 return null;
             }
@@ -60,16 +61,18 @@ public class ImagePreview implements Preview {
                 try {
                     panel.setImage(get());
                 } catch (Exception e) {
+                    view.getFileStatus().setVisible(true);
                 }
             }
         };
         previewLoader.execute();
     }
 
-    public InputStream getInputStream() {
+    private InputStream getInputStream() {
         try {
             return new FileInputStream(file);
         } catch (FileNotFoundException e) {
+            view.getFileStatus().setVisible(true);
         }
         return null;
     }

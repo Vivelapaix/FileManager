@@ -61,9 +61,7 @@ public class FileManagerController {
                 DefaultMutableTreeNode node =
                         (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
                 showChildren(node);
-                currentFile = (File)node.getUserObject();
-                setFileDetails(currentFile);
-                previewFile(currentFile);
+                updateView((File)node.getUserObject());
             }
         };
 
@@ -73,13 +71,7 @@ public class FileManagerController {
         listSelectionListener = new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent lse) {
-                File selectedFile = getSelectedFile();
-
-                if (selectedFile != null && selectedFile != currentFile) {
-                    currentFile = selectedFile;
-                    setFileDetails(currentFile);
-                    previewFile(currentFile);
-                }
+                updateView(getSelectedFile());
 
                 if (currentFile.isDirectory()) {
                     view.disableFileOperations();
@@ -98,7 +90,6 @@ public class FileManagerController {
                     }
                 } catch(Throwable t) {
                 }
-                view.getGuiPanel().repaint();
             }
         });
 
@@ -137,6 +128,16 @@ public class FileManagerController {
         }
 
         return null;
+    }
+
+    private void updateView(File selectedFile) {
+
+        if (selectedFile != null && selectedFile != currentFile) {
+            currentFile = selectedFile;
+            view.getFileStatus().setVisible(false);
+            setFileDetails(currentFile);
+            previewFile(currentFile);
+        }
     }
 
     private void previewFile(File file) {
