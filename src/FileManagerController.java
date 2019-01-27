@@ -44,7 +44,10 @@ public class FileManagerController {
         view = new FileManagerView();
         view.getTree().setModel(new FileTreeModel(new DefaultMutableTreeNode()));
         view.getTable().setModel(new FileTableModel());
+        view.disableFileOperations();
+    }
 
+    private void enableFileOperations() {
         view.getOpenFile().setEnabled(desktop.isSupported(Desktop.Action.OPEN));
         view.getEditFile().setEnabled(desktop.isSupported(Desktop.Action.EDIT));
         view.getPrintFile().setEnabled(desktop.isSupported(Desktop.Action.PRINT));
@@ -77,6 +80,12 @@ public class FileManagerController {
                     setFileDetails(currentFile);
                     previewFile(currentFile);
                 }
+
+                if (currentFile.isDirectory()) {
+                    view.disableFileOperations();
+                } else {
+                    enableFileOperations();
+                }
             }
         };
         view.getTable().getSelectionModel().addListSelectionListener(listSelectionListener);
@@ -84,7 +93,9 @@ public class FileManagerController {
         view.getOpenFile().addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    desktop.open(currentFile);
+                    if (!currentFile.isDirectory()) {
+                        desktop.open(currentFile);
+                    }
                 } catch(Throwable t) {
                 }
                 view.getGuiPanel().repaint();
@@ -94,7 +105,9 @@ public class FileManagerController {
         view.getEditFile().addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    desktop.edit(currentFile);
+                    if (!currentFile.isDirectory()) {
+                        desktop.edit(currentFile);
+                    }
                 } catch(Throwable t) {
                 }
             }
@@ -103,7 +116,9 @@ public class FileManagerController {
         view.getPrintFile().addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    desktop.print(currentFile);
+                    if (!currentFile.isDirectory()) {
+                        desktop.print(currentFile);
+                    }
                 } catch(Throwable t) {
                 }
             }

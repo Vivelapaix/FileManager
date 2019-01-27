@@ -1,4 +1,4 @@
-package Constant;
+package utils;
 
 public class Constants {
     public static final String NO_PREVIEW_LABEL = "NO PREVIEW";

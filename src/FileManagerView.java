@@ -1,4 +1,4 @@
-import Constant.Constants;
+import utils.Constants;
 import preview.ImagePanel;
 import preview.PreviewView;
 
@@ -128,12 +128,6 @@ public class FileManagerView implements PreviewView {
         return tableScroll;
     }
 
-    public void hidePreviews() {
-        noPreview.setVisible(false);
-        textPreviewScroll.setVisible(false);
-        imagePreview.setVisible(false);
-    }
-
     private JPanel createFileProperties() {
         JPanel fileProperties = new JPanel(new BorderLayout(4,2));
         fileProperties.setBorder(new EmptyBorder(0,6,0,6));
@@ -193,6 +187,12 @@ public class FileManagerView implements PreviewView {
         return toolBar;
     }
 
+    public void disableFileOperations() {
+        openFile.setEnabled(false);
+        editFile.setEnabled(false);
+        printFile.setEnabled(false);
+    }
+
     private JPanel createFileDetailsView() {
         JPanel detailView = new JPanel(new BorderLayout(3,3));
         JPanel fileView = new JPanel(new BorderLayout(3,3));
@@ -234,6 +234,12 @@ public class FileManagerView implements PreviewView {
         preview.add(imagePreview, Constants.IMAGE_PREVIEW_LABEL);
 
         return preview;
+    }
+
+    public void hidePreviews() {
+        noPreview.setVisible(false);
+        textPreviewScroll.setVisible(false);
+        imagePreview.setVisible(false);
     }
 
     public JFrame getFrame() {

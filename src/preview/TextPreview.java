@@ -1,7 +1,7 @@
 package preview;
 
 
-import Constant.Constants;
+import utils.Constants;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -22,10 +22,12 @@ public class TextPreview implements Preview {
     private static final String DEFAULT_ENCODING = "UTF-8";
     
     private static final List<String> ACCEPTED_EXTENSIONS_LIST = Arrays.asList("txt", "html", "java",
-            "css", "js", "xml", "coffee", "dart", "ts", "rb");
+            "css", "js", "xml", "rb", "py", "csv");
     
     private static final Set<String> ACCEPTED_EXTENSIONS = new HashSet<String>(ACCEPTED_EXTENSIONS_LIST);
-    
+
+    public static final int PREVIEW_BUFFER_SIZE = 3 * 1024;
+
     private final PreviewView view;
     
     private final JScrollPane textPreviewScrollPane;
@@ -73,9 +75,13 @@ public class TextPreview implements Preview {
     private byte[] readContent() {
 
         try {
-            byte[] bytes = new byte[(int) file.length()];
+            long fileLength = file.length();
+            long size = fileLength > PREVIEW_BUFFER_SIZE ?
+                    PREVIEW_BUFFER_SIZE : fileLength;
+
+            byte[] bytes = new byte[(int)size];
             DataInputStream dis = new DataInputStream(new FileInputStream(file));
-            dis.readFully(bytes);
+            dis.read(bytes);
             dis.close();
             return bytes;
         } catch (IOException e) {

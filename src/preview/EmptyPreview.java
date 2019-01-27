@@ -1,10 +1,8 @@
 package preview;
 
 
-import sun.security.pkcs11.wrapper.Constants;
-
 import javax.swing.JLabel;
-import java.awt.*;
+import java.awt.CardLayout;
 
 public class EmptyPreview implements Preview {
     
@@ -20,7 +18,7 @@ public class EmptyPreview implements Preview {
     public void show() {
         this.view.hidePreviews();
         ((CardLayout)this.view.getPreview().getLayout())
-                .show(view.getPreview(), Constant.Constants.NO_PREVIEW_LABEL);
+                .show(view.getPreview(), utils.Constants.NO_PREVIEW_LABEL);
         this.noPreviewLabel.setVisible(true);
     }
 }

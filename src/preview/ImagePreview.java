@@ -1,11 +1,11 @@
 package preview;
 
 
-import Constant.Constants;
+import utils.Constants;
 
 import javax.imageio.ImageIO;
 import javax.swing.SwingWorker;
-import java.awt.*;
+import java.awt.CardLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,6 +43,8 @@ public class ImagePreview implements Preview {
             @Override
             public BufferedImage doInBackground() {
                 try {
+                    view.hidePreviews();
+                    view.getNoPreview().setText("File is loading...");
                     return ImageIO.read(getInputStream());
                 } catch (IOException e) {
                 }
@@ -52,6 +54,7 @@ public class ImagePreview implements Preview {
             @Override
             protected void done() {
                 view.hidePreviews();
+                view.getNoPreview().setText("NO PREVIEW AVAILABLE");
                 panel.setVisible(true);
                 ((CardLayout)view.getPreview().getLayout())
                         .show(view.getPreview(), Constants.IMAGE_PREVIEW_LABEL);
