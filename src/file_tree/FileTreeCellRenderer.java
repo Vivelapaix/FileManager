@@ -41,4 +41,3 @@ public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
         return label;
     }
 }
-
