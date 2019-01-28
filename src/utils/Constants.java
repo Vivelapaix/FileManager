@@ -19,4 +19,6 @@ public class Constants {
     public static final String OPEN_LABEL = "Open";
     public static final String EDIT_LABEL = "Edit";
     public static final String PRINT_LABEL = "Print";
+
+    public static final String SOMETHING_WRONG_LABEL = "SOMETHING  WRONG  WITH  FILE";
 }

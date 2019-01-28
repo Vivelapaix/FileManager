@@ -6,6 +6,7 @@ import preview.PreviewFactory;
 
 import javax.swing.Icon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
@@ -61,9 +62,7 @@ public class FileManagerController {
                 DefaultMutableTreeNode node =
                         (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
                 showChildren(node);
-                currentFile = (File)node.getUserObject();
-                setFileDetails(currentFile);
-                previewFile(currentFile);
+                updateView((File)node.getUserObject());
             }
         };
 
@@ -73,13 +72,7 @@ public class FileManagerController {
         listSelectionListener = new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent lse) {
-                File selectedFile = getSelectedFile();
-
-                if (selectedFile != null && selectedFile != currentFile) {
-                    currentFile = selectedFile;
-                    setFileDetails(currentFile);
-                    previewFile(currentFile);
-                }
+                updateView(getSelectedFile());
 
                 if (currentFile.isDirectory()) {
                     view.disableFileOperations();
@@ -97,8 +90,8 @@ public class FileManagerController {
                         desktop.open(currentFile);
                     }
                 } catch(Throwable t) {
+                    showThrowable(t);
                 }
-                view.getGuiPanel().repaint();
             }
         });
 
@@ -109,6 +102,7 @@ public class FileManagerController {
                         desktop.edit(currentFile);
                     }
                 } catch(Throwable t) {
+                    showThrowable(t);
                 }
             }
         });
@@ -120,11 +114,23 @@ public class FileManagerController {
                         desktop.print(currentFile);
                     }
                 } catch(Throwable t) {
+                    showThrowable(t);
                 }
             }
         });
 
         return view.getFrame();
+    }
+
+    private void showThrowable(Throwable t) {
+        t.printStackTrace();
+        JOptionPane.showMessageDialog(
+                view.getGuiPanel(),
+                t.toString(),
+                t.getMessage(),
+                JOptionPane.ERROR_MESSAGE
+        );
+        view.getGuiPanel().repaint();
     }
 
     private File getSelectedFile() {
@@ -137,6 +143,16 @@ public class FileManagerController {
         }
 
         return null;
+    }
+
+    private void updateView(File selectedFile) {
+
+        if (selectedFile != null && selectedFile != currentFile) {
+            currentFile = selectedFile;
+            view.getFileStatus().setVisible(false);
+            setFileDetails(currentFile);
+            previewFile(currentFile);
+        }
     }
 
     private void previewFile(File file) {
