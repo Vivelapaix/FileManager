@@ -6,6 +6,7 @@ import preview.PreviewFactory;
 
 import javax.swing.Icon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
@@ -89,6 +90,7 @@ public class FileManagerController {
                         desktop.open(currentFile);
                     }
                 } catch(Throwable t) {
+                    showThrowable(t);
                 }
             }
         });
@@ -100,6 +102,7 @@ public class FileManagerController {
                         desktop.edit(currentFile);
                     }
                 } catch(Throwable t) {
+                    showThrowable(t);
                 }
             }
         });
@@ -111,11 +114,23 @@ public class FileManagerController {
                         desktop.print(currentFile);
                     }
                 } catch(Throwable t) {
+                    showThrowable(t);
                 }
             }
         });
 
         return view.getFrame();
+    }
+
+    private void showThrowable(Throwable t) {
+        t.printStackTrace();
+        JOptionPane.showMessageDialog(
+                view.getGuiPanel(),
+                t.toString(),
+                t.getMessage(),
+                JOptionPane.ERROR_MESSAGE
+        );
+        view.getGuiPanel().repaint();
     }
 
     private File getSelectedFile() {
