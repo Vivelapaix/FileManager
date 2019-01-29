@@ -21,7 +21,7 @@ public class ImagePreview implements Preview {
     
     private static final List<String> EXTENSIONS = Arrays.asList("png", "jpg", "jpeg");
     
-    private static final Set<String> IMAGE_EXTENSIONS = new HashSet<String>(EXTENSIONS);
+    private static final Set<String> IMAGE_EXTENSIONS = new HashSet<>(EXTENSIONS);
     
     private final PreviewView view;
     

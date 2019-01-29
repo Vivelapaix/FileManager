@@ -9,15 +9,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.Desktop;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
@@ -56,66 +52,54 @@ public class FileManagerController {
 
     public JFrame createGUI() {
 
-        TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
-            @Override
-            public void valueChanged(TreeSelectionEvent tse){
-                DefaultMutableTreeNode node =
-                        (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
-                showChildren(node);
-                updateView((File)node.getUserObject());
-            }
+        TreeSelectionListener treeSelectionListener = tse -> {
+            DefaultMutableTreeNode node =
+                    (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
+            showChildren(node);
+            updateView((File)node.getUserObject());
         };
 
         view.getTree().addTreeSelectionListener(treeSelectionListener);
         view.getTree().setCellRenderer(new FileTreeCellRenderer());
 
-        listSelectionListener = new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent lse) {
-                updateView(getSelectedFile());
+        listSelectionListener = lse -> {
+            updateView(getSelectedFile());
 
-                if (currentFile.isDirectory()) {
-                    view.disableFileOperations();
-                } else {
-                    enableFileOperations();
-                }
+            if (currentFile.isDirectory()) {
+                view.disableFileOperations();
+            } else {
+                enableFileOperations();
             }
         };
         view.getTable().getSelectionModel().addListSelectionListener(listSelectionListener);
 
-        view.getOpenFile().addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (!currentFile.isDirectory()) {
-                        desktop.open(currentFile);
-                    }
-                } catch(Throwable t) {
-                    showThrowable(t);
+        view.getOpenFile().addActionListener(ae -> {
+            try {
+                if (!currentFile.isDirectory()) {
+                    desktop.open(currentFile);
                 }
+            } catch(Throwable t) {
+                showThrowable(t);
             }
         });
 
-        view.getEditFile().addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (!currentFile.isDirectory()) {
-                        desktop.edit(currentFile);
-                    }
-                } catch(Throwable t) {
-                    showThrowable(t);
+        view.getEditFile().addActionListener(ae -> {
+            try {
+                if (!currentFile.isDirectory()) {
+                    desktop.edit(currentFile);
                 }
+            } catch(Throwable t) {
+                showThrowable(t);
             }
         });
 
-        view.getPrintFile().addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (!currentFile.isDirectory()) {
-                        desktop.print(currentFile);
-                    }
-                } catch(Throwable t) {
-                    showThrowable(t);
+        view.getPrintFile().addActionListener(ae -> {
+            try {
+                if (!currentFile.isDirectory()) {
+                    desktop.print(currentFile);
                 }
+            } catch(Throwable t) {
+                showThrowable(t);
             }
         });
 
@@ -211,15 +195,13 @@ public class FileManagerController {
     }
 
     private void setTableData(final File[] files) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (view.getTable() == null) {
-                    view.getTable().setModel(new FileTableModel());
-                }
-                view.getTable().getSelectionModel().removeListSelectionListener(listSelectionListener);
-                ((FileTableModel)view.getTable().getModel()).setFiles(files);
-                view.getTable().getSelectionModel().addListSelectionListener(listSelectionListener);
+        SwingUtilities.invokeLater(() -> {
+            if (view.getTable() == null) {
+                view.getTable().setModel(new FileTableModel());
             }
+            view.getTable().getSelectionModel().removeListSelectionListener(listSelectionListener);
+            ((FileTableModel)view.getTable().getModel()).setFiles(files);
+            view.getTable().getSelectionModel().addListSelectionListener(listSelectionListener);
         });
     }
 }

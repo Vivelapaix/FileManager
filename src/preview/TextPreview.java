@@ -25,7 +25,7 @@ public class TextPreview implements Preview {
     private static final List<String> EXTENSIONS = Arrays.asList("txt", "html", "java",
             "css", "js", "xml", "rb", "py", "csv", "c", "cpp");
     
-    private static final Set<String> TEXT_EXTENSIONS = new HashSet<String>(EXTENSIONS);
+    private static final Set<String> TEXT_EXTENSIONS = new HashSet<>(EXTENSIONS);
 
     private final PreviewView view;
     
