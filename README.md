@@ -1,18 +1,18 @@
 # File Manager
 
-A simple File Manager application. It is based on Java Swing and build with Intellij IDEA.
+A simple File Manager application. It is based on Java Swing and built with Intellij IDEA.
 
-The operations performed on files include opening, editing, printing, previewing and searching for files. The preview is available only for text files and images.
+The operations include opening, editing, printing, previewing and searching for files. The preview is available only for text files and images.
 
 ## Required
 This application requires:
 * Java 1.8 or greater
 
 ## About
-This application has three panes:
-* System folders are displayed in a hierarchical tree based on their directory structure in the left pane
-* The contents of the current directory are displayed in the center pane
-* The contents of the current file (just preview) are displayed in the right pane
+This application has three panels:
+* System folders are displayed in the hierarchical tree based on their directory structure in the left panel
+* The contents of the current directory are displayed in the center panel
+* The contents of the current file (preview) are displayed in the right panel
 
 ## Building File Manager
 
