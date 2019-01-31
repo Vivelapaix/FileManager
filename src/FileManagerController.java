@@ -62,15 +62,8 @@ public class FileManagerController {
         view.getTree().addTreeSelectionListener(treeSelectionListener);
         view.getTree().setCellRenderer(new FileTreeCellRenderer());
 
-        listSelectionListener = lse -> {
-            updateView(getSelectedFile());
+        listSelectionListener = lse -> updateView(getSelectedFile());
 
-            if (currentFile.isDirectory()) {
-                view.disableFileOperations();
-            } else {
-                enableFileOperations();
-            }
-        };
         view.getTable().getSelectionModel().addListSelectionListener(listSelectionListener);
 
         view.getOpenFile().addActionListener(ae -> {
@@ -137,6 +130,12 @@ public class FileManagerController {
             setFileDetails(currentFile);
             previewFile(currentFile);
         }
+
+        if (currentFile.isDirectory()) {
+            view.disableFileOperations();
+        } else {
+            enableFileOperations();
+        }
     }
 
     private void previewFile(File file) {
@@ -153,7 +152,7 @@ public class FileManagerController {
             public Void doInBackground() {
                 File file = (File) node.getUserObject();
                 if (file.isDirectory()) {
-                    File[] files = FileSystemView.getFileSystemView().getFiles(file, true);
+                    File[] files = fileSystemView.getFiles(file, true);
                     if (node.isLeaf()) {
                         for (File child : files) {
                             if (child.isDirectory()) {
