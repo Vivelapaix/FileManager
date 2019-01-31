@@ -12,13 +12,6 @@ import java.io.File;
 
 public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
 
-    private JLabel label;
-
-    public FileTreeCellRenderer() {
-        label = new JLabel();
-        label.setOpaque(true);
-    }
-
     @Override
     public Component getTreeCellRendererComponent(
             JTree tree,
