@@ -7,6 +7,8 @@ public class Constants {
 
     public static final String NO_PREVIEW_AVAILABLE_LABEL = "NO PREVIEW AVAILABLE";
     public static final String FILE_LOADING_LABEL = "File is loading...";
+    public static final String FILE_IS_LARGE_FOR_PREVIEW_LABEL =
+            "File is too large for preview";
 
     public static final String APP_NAME = "File Manager";
     public static final String FILE_LABEL = "File";
