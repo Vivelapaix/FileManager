@@ -11,12 +11,11 @@ public class ImagePanel extends JLabel {
 
     public void setImage(BufferedImage image) {
         this.image = image;
-        this.repaint();
     }
 
     public void paintComponent(Graphics g) {
-        int imgWidth = image.getWidth(null);
-        int imgHeight = image.getHeight(null);
+        int imgWidth = image == null ? 0 : image.getWidth(null);
+        int imgHeight = image == null ? 0 : image.getHeight(null);
         int labelWidth = getWidth();
         int labelHeight = getHeight();
 

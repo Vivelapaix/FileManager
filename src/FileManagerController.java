@@ -1,3 +1,4 @@
+import exceptions.ExceptionHandler;
 import file_table.FileTableModel;
 import file_tree.FileTreeCellRenderer;
 import file_tree.FileTreeModel;
@@ -15,10 +16,14 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-public class FileManagerController {
+import static utils.Constants.ERROR_SELECT_FILE;
+import static utils.Constants.SOMETHING_WRONG_LABEL;
+
+public class FileManagerController implements ExceptionHandler {
 
     private FileManagerView view;
 
@@ -62,7 +67,13 @@ public class FileManagerController {
         view.getTree().addTreeSelectionListener(treeSelectionListener);
         view.getTree().setCellRenderer(new FileTreeCellRenderer());
 
-        listSelectionListener = lse -> updateView(getSelectedFile());
+        listSelectionListener = (event) -> {
+            try {
+                updateView(getSelectedFile());
+            } catch (Exception e) {
+                handleException(ERROR_SELECT_FILE, e);
+            }
+        };
 
         view.getTable().getSelectionModel().addListSelectionListener(listSelectionListener);
 
@@ -71,8 +82,8 @@ public class FileManagerController {
                 if (!currentFile.isDirectory()) {
                     desktop.open(currentFile);
                 }
-            } catch(Throwable t) {
-                showThrowable(t);
+            } catch(IOException e) {
+                handleException(e.getMessage(), e);
             }
         });
 
@@ -81,8 +92,8 @@ public class FileManagerController {
                 if (!currentFile.isDirectory()) {
                     desktop.edit(currentFile);
                 }
-            } catch(Throwable t) {
-                showThrowable(t);
+            } catch(IOException e) {
+                handleException(e.getMessage(), e);
             }
         });
 
@@ -91,23 +102,22 @@ public class FileManagerController {
                 if (!currentFile.isDirectory()) {
                     desktop.print(currentFile);
                 }
-            } catch(Throwable t) {
-                showThrowable(t);
+            } catch(IOException e) {
+                handleException(e.getMessage(), e);
             }
         });
 
         return view.getFrame();
     }
 
-    private void showThrowable(Throwable t) {
-        t.printStackTrace();
+    public void handleException(String message, Exception error) {
         JOptionPane.showMessageDialog(
                 view.getGuiPanel(),
-                t.toString(),
-                t.getMessage(),
+                message,
+                error.getClass().getName(),
                 JOptionPane.ERROR_MESSAGE
         );
-        view.getGuiPanel().repaint();
+        view.setFileStatus(SOMETHING_WRONG_LABEL);
     }
 
     private File getSelectedFile() {
@@ -126,7 +136,6 @@ public class FileManagerController {
 
         if (selectedFile != null && selectedFile != currentFile) {
             currentFile = selectedFile;
-            view.getFileStatus().setVisible(false);
             setFileDetails(currentFile);
             previewFile(currentFile);
         }
@@ -139,9 +148,10 @@ public class FileManagerController {
     }
 
     private void previewFile(File file) {
-        Preview preview = previewFactory.createPreview(view, file);
+        Preview preview = previewFactory.createPreview(view, file, this);
         preview.show();
         view.getPreview().repaint();
+        view.clearFileStatus();
     }
 
     private void showChildren(final DefaultMutableTreeNode node) {

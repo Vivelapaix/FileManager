@@ -1,6 +1,6 @@
-import utils.Constants;
 import preview.ImagePanel;
 import preview.PreviewView;
+import utils.Constants;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -35,7 +35,6 @@ import static utils.Constants.OPEN_LABEL;
 import static utils.Constants.PATH_LABEL;
 import static utils.Constants.PRINT_LABEL;
 import static utils.Constants.SIZE_LABEL;
-import static utils.Constants.SOMETHING_WRONG_LABEL;
 import static utils.Constants.TYPE_LABEL;
 
 public class FileManagerView implements PreviewView {
@@ -190,12 +189,20 @@ public class FileManagerView implements PreviewView {
         printFile.setMnemonic('p');
         toolBar.add(printFile);
 
-        fileStatus = new JLabel(SOMETHING_WRONG_LABEL);
+        fileStatus = new JLabel();
         fileStatus.setForeground(Color.RED);
-        fileStatus.setVisible(false);
+        fileStatus.setVisible(true);
         toolBar.add(fileStatus);
 
         return toolBar;
+    }
+
+    public void setFileStatus(String text) {
+        fileStatus.setText(text);
+    }
+
+    public void clearFileStatus() {
+        fileStatus.setText("");
     }
 
     public void disableFileOperations() {

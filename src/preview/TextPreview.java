@@ -1,6 +1,8 @@
 package preview;
 
 
+import exceptions.ExceptionHandler;
+import exceptions.FileManagerException;
 import utils.Constants;
 
 import javax.swing.JScrollPane;
@@ -11,10 +13,13 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static utils.Constants.ERROR_READ_FILE;
 
 public class TextPreview implements Preview {
     
@@ -34,12 +39,17 @@ public class TextPreview implements Preview {
     private final JTextArea textPreview;
     
     private final File file;
+
+    private final ExceptionHandler exceptionHandler;
     
-    public TextPreview(PreviewView view, JScrollPane textPreviewScrollPane, JTextArea textPreview, File file) {
+    public TextPreview(PreviewView view, JScrollPane textPreviewScrollPane,
+                       JTextArea textPreview, File file,
+                       ExceptionHandler exceptionHandler) {
         this.view = view;
         this.textPreviewScrollPane = textPreviewScrollPane;
         this.textPreview = textPreview;
         this.file = file;
+        this.exceptionHandler = exceptionHandler;
     }
 
     public void show() {
@@ -47,13 +57,12 @@ public class TextPreview implements Preview {
         SwingWorker<String, Object> previewLoader = new SwingWorker<String, Object>() {
 
             @Override
-            public String doInBackground(){
+            public String doInBackground() throws FileManagerException {
                 try {
                     return new String(readContent(), DEFAULT_ENCODING);
-                } catch (Exception e) {
-                    view.getFileStatus().setVisible(true);
+                }  catch (UnsupportedEncodingException e) {
+                    throw new FileManagerException(ERROR_READ_FILE, e);
                 }
-                return null;
             }
 
             @Override
@@ -65,29 +74,27 @@ public class TextPreview implements Preview {
                 try {
                     textPreview.setText(get());
                 } catch (Exception e) {
-                    view.getFileStatus().setVisible(true);
+                    exceptionHandler.handleException(e.getMessage(), e);
                 }
             }
         };
         previewLoader.execute();
     }
 
-    private byte[] readContent() {
+    private byte[] readContent() throws FileManagerException {
 
         try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
             long fileLength = file.length();
             long size = fileLength > PREVIEW_BUFFER_SIZE ?
                     PREVIEW_BUFFER_SIZE : fileLength;
             byte[] bytes = new byte[(int)size];
-            dis.read(bytes);
+            dis.readFully(bytes);
 
             return bytes;
 
         } catch (IOException e) {
-            view.getFileStatus().setVisible(true);
+            throw new FileManagerException(ERROR_READ_FILE, e);
         }
-
-        return null;
     }
 
     public static boolean acceptsExtension(String extension) {
