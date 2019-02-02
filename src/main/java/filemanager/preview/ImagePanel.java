@@ -1,4 +1,4 @@
-package preview;
+package filemanager.preview;
 
 import javax.swing.JLabel;
 import java.awt.Graphics;

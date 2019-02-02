@@ -1,8 +1,8 @@
-package preview;
+package filemanager.preview;
 
 
-import exceptions.ExceptionHandler;
-import exceptions.FileManagerException;
+import filemanager.exceptions.ExceptionHandler;
+import filemanager.exceptions.FileManagerException;
 
 import javax.imageio.ImageIO;
 import javax.swing.SwingWorker;
@@ -19,10 +19,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import static utils.Constants.ERROR_READ_FILE;
-import static utils.Constants.FILE_IS_LARGE_FOR_PREVIEW_LABEL;
-import static utils.Constants.FILE_LOADING_LABEL;
-import static utils.Constants.IMAGE_PREVIEW_LABEL;
+import static filemanager.utils.Constants.ERROR_READ_FILE;
+import static filemanager.utils.Constants.FILE_IS_LARGE_FOR_PREVIEW_LABEL;
+import static filemanager.utils.Constants.FILE_LOADING_LABEL;
+import static filemanager.utils.Constants.IMAGE_PREVIEW_LABEL;
+
 
 public class ImagePreview implements Preview {
 

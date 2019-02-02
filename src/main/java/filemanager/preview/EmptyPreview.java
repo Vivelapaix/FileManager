@@ -1,11 +1,12 @@
-package preview;
+package filemanager.preview;
 
 
 import javax.swing.JLabel;
 import java.awt.CardLayout;
 
-import static utils.Constants.NO_PREVIEW_AVAILABLE_LABEL;
-import static utils.Constants.NO_PREVIEW_LABEL;
+import static filemanager.utils.Constants.NO_PREVIEW_AVAILABLE_LABEL;
+import static filemanager.utils.Constants.NO_PREVIEW_LABEL;
+
 
 public class EmptyPreview implements Preview {
     

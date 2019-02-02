@@ -1,5 +1,7 @@
-import preview.ImagePanel;
-import preview.PreviewView;
+package filemanager;
+
+import filemanager.preview.ImagePanel;
+import filemanager.preview.PreviewView;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -25,19 +27,19 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
-import static utils.Constants.APP_NAME;
-import static utils.Constants.DIRECTORY_LABEL;
-import static utils.Constants.EDIT_LABEL;
-import static utils.Constants.FILE_LABEL;
-import static utils.Constants.IMAGE_PREVIEW_LABEL;
-import static utils.Constants.MODIFIED_LABEL;
-import static utils.Constants.NO_PREVIEW_LABEL;
-import static utils.Constants.OPEN_LABEL;
-import static utils.Constants.PATH_LABEL;
-import static utils.Constants.PRINT_LABEL;
-import static utils.Constants.SIZE_LABEL;
-import static utils.Constants.TEXT_PREVIEW_LABEL;
-import static utils.Constants.TYPE_LABEL;
+import static filemanager.utils.Constants.APP_NAME;
+import static filemanager.utils.Constants.DIRECTORY_LABEL;
+import static filemanager.utils.Constants.EDIT_LABEL;
+import static filemanager.utils.Constants.FILE_LABEL;
+import static filemanager.utils.Constants.IMAGE_PREVIEW_LABEL;
+import static filemanager.utils.Constants.MODIFIED_LABEL;
+import static filemanager.utils.Constants.NO_PREVIEW_LABEL;
+import static filemanager.utils.Constants.OPEN_LABEL;
+import static filemanager.utils.Constants.PATH_LABEL;
+import static filemanager.utils.Constants.PRINT_LABEL;
+import static filemanager.utils.Constants.SIZE_LABEL;
+import static filemanager.utils.Constants.TEXT_PREVIEW_LABEL;
+import static filemanager.utils.Constants.TYPE_LABEL;
 
 public class FileManagerView implements PreviewView {
 

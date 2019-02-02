@@ -1,9 +1,11 @@
-import exceptions.ExceptionHandler;
-import file_table.FileTableModel;
-import file_tree.FileTreeCellRenderer;
-import file_tree.FileTreeModel;
-import preview.Preview;
-import preview.PreviewFactory;
+package filemanager;
+
+import filemanager.exceptions.ExceptionHandler;
+import filemanager.file_table.FileTableModel;
+import filemanager.file_tree.FileTreeCellRenderer;
+import filemanager.file_tree.FileTreeModel;
+import filemanager.preview.Preview;
+import filemanager.preview.PreviewFactory;
 
 import javax.swing.Icon;
 import javax.swing.JFrame;
@@ -20,8 +22,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import static utils.Constants.ERROR_SELECT_FILE;
-import static utils.Constants.SOMETHING_WRONG_LABEL;
+import static filemanager.utils.Constants.ERROR_SELECT_FILE;
+import static filemanager.utils.Constants.SOMETHING_WRONG_LABEL;
 
 public class FileManagerController implements ExceptionHandler {
 

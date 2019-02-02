@@ -1,4 +1,4 @@
-package exceptions;
+package filemanager.exceptions;
 
 public class FileManagerException extends Exception {
 

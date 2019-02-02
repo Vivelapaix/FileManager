@@ -1,4 +1,4 @@
-package preview;
+package filemanager.preview;
 
 public interface Preview {
 
