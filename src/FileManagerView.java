@@ -1,4 +1,3 @@
-import utils.Constants;
 import preview.ImagePanel;
 import preview.PreviewView;
 
@@ -30,12 +29,14 @@ import static utils.Constants.APP_NAME;
 import static utils.Constants.DIRECTORY_LABEL;
 import static utils.Constants.EDIT_LABEL;
 import static utils.Constants.FILE_LABEL;
+import static utils.Constants.IMAGE_PREVIEW_LABEL;
 import static utils.Constants.MODIFIED_LABEL;
+import static utils.Constants.NO_PREVIEW_LABEL;
 import static utils.Constants.OPEN_LABEL;
 import static utils.Constants.PATH_LABEL;
 import static utils.Constants.PRINT_LABEL;
 import static utils.Constants.SIZE_LABEL;
-import static utils.Constants.SOMETHING_WRONG_LABEL;
+import static utils.Constants.TEXT_PREVIEW_LABEL;
 import static utils.Constants.TYPE_LABEL;
 
 public class FileManagerView implements PreviewView {
@@ -190,12 +191,20 @@ public class FileManagerView implements PreviewView {
         printFile.setMnemonic('p');
         toolBar.add(printFile);
 
-        fileStatus = new JLabel(SOMETHING_WRONG_LABEL);
+        fileStatus = new JLabel();
         fileStatus.setForeground(Color.RED);
-        fileStatus.setVisible(false);
+        fileStatus.setVisible(true);
         toolBar.add(fileStatus);
 
         return toolBar;
+    }
+
+    public void setFileStatus(String text) {
+        fileStatus.setText(text);
+    }
+
+    public void clearFileStatus() {
+        fileStatus.setText("");
     }
 
     public void disableFileOperations() {
@@ -239,9 +248,9 @@ public class FileManagerView implements PreviewView {
         imagePreview = new ImagePanel();
         imagePreview.setVisible(false);
 
-        preview.add(noPreview, Constants.NO_PREVIEW_LABEL);
-        preview.add(textPreviewScroll, Constants.TEXT_PREVIEW_LABEL);
-        preview.add(imagePreview, Constants.IMAGE_PREVIEW_LABEL);
+        preview.add(noPreview, NO_PREVIEW_LABEL);
+        preview.add(textPreviewScroll, TEXT_PREVIEW_LABEL);
+        preview.add(imagePreview, IMAGE_PREVIEW_LABEL);
 
         return preview;
     }

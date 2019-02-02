@@ -1,6 +1,8 @@
 package preview;
 
 
+import exceptions.ExceptionHandler;
+import exceptions.FileManagerException;
 import utils.Constants;
 
 import javax.imageio.ImageIO;
@@ -16,6 +18,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+
+import static utils.Constants.ERROR_READ_FILE;
+import static utils.Constants.IMAGE_PREVIEW_LABEL;
+import static utils.Constants.NO_PREVIEW_AVAILABLE_LABEL;
 
 public class ImagePreview implements Preview {
     
@@ -28,11 +35,15 @@ public class ImagePreview implements Preview {
     private final ImagePanel panel;
     
     private final File file;
+
+    private final ExceptionHandler exceptionHandler;
     
-    public ImagePreview(PreviewView view, ImagePanel panel, File file) {
+    public ImagePreview(PreviewView view, ImagePanel panel,
+                        File file, ExceptionHandler exceptionHandler) {
         this.view = view;
         this.panel = panel;
         this.file = file;
+        this.exceptionHandler = exceptionHandler;
     }
 
     public void show() {
@@ -40,41 +51,41 @@ public class ImagePreview implements Preview {
         SwingWorker<BufferedImage, Object> previewLoader = new SwingWorker<BufferedImage, Object>() {
 
             @Override
-            public BufferedImage doInBackground() {
+            public BufferedImage doInBackground() throws FileManagerException {
                 try {
                     view.hidePreviews();
                     view.getNoPreview().setText(Constants.FILE_LOADING_LABEL);
                     return ImageIO.read(getInputStream());
                 } catch (IOException e) {
-                    view.getFileStatus().setVisible(true);
+                    throw new FileManagerException(ERROR_READ_FILE, e);
                 }
-                return null;
             }
 
             @Override
             protected void done() {
                 view.hidePreviews();
-                view.getNoPreview().setText(Constants.NO_PREVIEW_AVAILABLE_LABEL);
+                view.getNoPreview().setText(NO_PREVIEW_AVAILABLE_LABEL);
                 panel.setVisible(true);
                 ((CardLayout)view.getPreview().getLayout())
-                        .show(view.getPreview(), Constants.IMAGE_PREVIEW_LABEL);
+                        .show(view.getPreview(), IMAGE_PREVIEW_LABEL);
                 try {
                     panel.setImage(get());
+                } catch (InterruptedException|ExecutionException e) {
+                    exceptionHandler.handleException(e.getMessage(), e);
                 } catch (Exception e) {
-                    view.getFileStatus().setVisible(true);
+                    exceptionHandler.handleException(e.getMessage(), e);
                 }
             }
         };
         previewLoader.execute();
     }
 
-    private InputStream getInputStream() {
+    private InputStream getInputStream() throws FileManagerException {
         try {
             return new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            view.getFileStatus().setVisible(true);
+            throw new FileManagerException(ERROR_READ_FILE, e);
         }
-        return null;
     }
 
     public static boolean acceptsExtension(String extension) {

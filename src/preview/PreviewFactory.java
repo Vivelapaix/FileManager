@@ -1,11 +1,13 @@
 package preview;
 
 
+import exceptions.ExceptionHandler;
+
 import java.io.File;
 
 public class PreviewFactory {
     
-    public Preview createPreview(PreviewView view, File file) {
+    public Preview createPreview(PreviewView view, File file, ExceptionHandler exceptionHandler) {
         if (file.isDirectory()) {
             return new EmptyPreview(view, view.getNoPreview());
         }
@@ -19,9 +21,10 @@ public class PreviewFactory {
         }
 
         if (TextPreview.acceptsExtension(fileExtension)) {
-            return new TextPreview(view, view.getTextPreviewScroll(), view.getTextPreview(), file);
+            return new TextPreview(view, view.getTextPreviewScroll(),
+                    view.getTextPreview(), file, exceptionHandler);
         } else if (ImagePreview.acceptsExtension(fileExtension)) {
-            return new ImagePreview(view, view.getImagePreview(), file);
+            return new ImagePreview(view, view.getImagePreview(), file, exceptionHandler);
         }
         return new EmptyPreview(view, view.getNoPreview());
     }
