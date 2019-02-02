@@ -1,6 +1,5 @@
 import preview.ImagePanel;
 import preview.PreviewView;
-import utils.Constants;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -30,11 +29,14 @@ import static utils.Constants.APP_NAME;
 import static utils.Constants.DIRECTORY_LABEL;
 import static utils.Constants.EDIT_LABEL;
 import static utils.Constants.FILE_LABEL;
+import static utils.Constants.IMAGE_PREVIEW_LABEL;
 import static utils.Constants.MODIFIED_LABEL;
+import static utils.Constants.NO_PREVIEW_LABEL;
 import static utils.Constants.OPEN_LABEL;
 import static utils.Constants.PATH_LABEL;
 import static utils.Constants.PRINT_LABEL;
 import static utils.Constants.SIZE_LABEL;
+import static utils.Constants.TEXT_PREVIEW_LABEL;
 import static utils.Constants.TYPE_LABEL;
 
 public class FileManagerView implements PreviewView {
@@ -246,9 +248,9 @@ public class FileManagerView implements PreviewView {
         imagePreview = new ImagePanel();
         imagePreview.setVisible(false);
 
-        preview.add(noPreview, Constants.NO_PREVIEW_LABEL);
-        preview.add(textPreviewScroll, Constants.TEXT_PREVIEW_LABEL);
-        preview.add(imagePreview, Constants.IMAGE_PREVIEW_LABEL);
+        preview.add(noPreview, NO_PREVIEW_LABEL);
+        preview.add(textPreviewScroll, TEXT_PREVIEW_LABEL);
+        preview.add(imagePreview, IMAGE_PREVIEW_LABEL);
 
         return preview;
     }
