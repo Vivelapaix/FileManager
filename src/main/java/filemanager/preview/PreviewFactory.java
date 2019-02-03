@@ -1,7 +1,7 @@
-package preview;
+package filemanager.preview;
 
 
-import exceptions.ExceptionHandler;
+import filemanager.exceptions.ExceptionHandler;
 
 import java.io.File;
 

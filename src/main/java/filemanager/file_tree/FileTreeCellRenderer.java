@@ -1,4 +1,4 @@
-package file_tree;
+package filemanager.file_tree;
 
 import javax.swing.Icon;
 import javax.swing.JLabel;

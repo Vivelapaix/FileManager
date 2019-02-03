@@ -1,9 +1,9 @@
-package preview;
+package filemanager.preview;
 
 
-import exceptions.ExceptionHandler;
-import exceptions.FileManagerException;
-import utils.Constants;
+import filemanager.exceptions.ExceptionHandler;
+import filemanager.exceptions.FileManagerException;
+import filemanager.utils.Constants;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static utils.Constants.ERROR_READ_FILE;
+import static filemanager.utils.Constants.ERROR_READ_FILE;
 
 public class TextPreview implements Preview {
     
