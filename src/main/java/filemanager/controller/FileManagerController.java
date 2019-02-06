@@ -47,7 +47,7 @@ public class FileManagerController implements ExceptionHandler {
 
     private void initView() {
         view = new FileManagerView();
-        view.getTree().setModel(new FileTreeModel(new DefaultMutableTreeNode()));
+        view.getFileTree().getTree().setModel(new FileTreeModel(new DefaultMutableTreeNode()));
         view.getTable().setModel(new FileTableModel());
         view.getFileOperations().disableFileOperations();
     }
@@ -67,8 +67,8 @@ public class FileManagerController implements ExceptionHandler {
             updateView((File)node.getUserObject());
         };
 
-        view.getTree().addTreeSelectionListener(treeSelectionListener);
-        view.getTree().setCellRenderer(new FileTreeCellRenderer());
+        view.getFileTree().getTree().addTreeSelectionListener(treeSelectionListener);
+        view.getFileTree().getTree().setCellRenderer(new FileTreeCellRenderer());
 
         listSelectionListener = (event) -> {
             try {
@@ -158,7 +158,7 @@ public class FileManagerController implements ExceptionHandler {
     }
 
     private void showChildren(final DefaultMutableTreeNode node) {
-        view.getTree().setEnabled(false);
+        view.getFileTree().getTree().setEnabled(false);
 
         SwingWorker<Void, File> worker = new SwingWorker<Void, File>() {
             @Override
@@ -187,7 +187,7 @@ public class FileManagerController implements ExceptionHandler {
 
             @Override
             protected void done() {
-                view.getTree().setEnabled(true);
+                view.getFileTree().getTree().setEnabled(true);
             }
         };
         worker.execute();

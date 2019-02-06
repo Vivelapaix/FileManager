@@ -5,10 +5,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
-import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.tree.TreeSelectionModel;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -20,8 +18,6 @@ public class FileManagerView {
     private JFrame frame;
     private JPanel guiPanel;
 
-    private JTree tree;
-
     private JTable table;
 
     private FileOperationsView fileOperations;
@@ -29,6 +25,8 @@ public class FileManagerView {
     private FilePropertiesView fileProperties;
 
     private FilePreviewView filePreview;
+
+    private FileTreeView fileTree;
 
     public FileManagerView() {
         buildFrame();
@@ -47,10 +45,11 @@ public class FileManagerView {
         guiPanel.setBorder(new EmptyBorder(5,5,5,5));
 
         filePreview = new FilePreviewView();
+        fileTree = new FileTreeView();
 
         JSplitPane sp = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
-                createFileTreeView(), createFileDetailsView());
+                fileTree, createFileDetailsView());
         sp.setResizeWeight(0.4);
 
         JSplitPane splitPane = new JSplitPane(
@@ -62,28 +61,6 @@ public class FileManagerView {
         guiPanel.add(splitPane, BorderLayout.CENTER);
 
         return guiPanel;
-    }
-
-    private JScrollPane createFileTree() {
-        tree = new JTree();
-        tree.setRootVisible(false);
-        tree.expandRow(0);
-        tree.setVisibleRowCount(15);
-        tree.getSelectionModel()
-                .setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-
-        JScrollPane treeScroll = new JScrollPane(tree);
-        Dimension d = treeScroll.getPreferredSize();
-        treeScroll.setPreferredSize(new Dimension(200, (int)d.getHeight()));
-
-        return treeScroll;
-    }
-
-    private JPanel createFileTreeView() {
-        JPanel treeView = new JPanel(new BorderLayout(3,3));
-        treeView.add(createFileTree(), BorderLayout.CENTER);
-
-        return treeView;
     }
 
     private JScrollPane createFileTable() {
@@ -123,12 +100,12 @@ public class FileManagerView {
         return guiPanel;
     }
 
-    public JTree getTree() {
-        return tree;
-    }
-
     public JTable getTable() {
         return table;
+    }
+
+    public FileTreeView getFileTree() {
+        return fileTree;
     }
 
     public FilePreviewView getFilePreview() {
