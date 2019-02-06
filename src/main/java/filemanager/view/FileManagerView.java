@@ -1,10 +1,9 @@
-package filemanager;
+package filemanager.view;
 
 import filemanager.preview.ImagePanel;
 import filemanager.preview.PreviewView;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,7 +13,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
@@ -29,14 +27,11 @@ import java.awt.GridLayout;
 
 import static filemanager.utils.Constants.APP_NAME;
 import static filemanager.utils.Constants.DIRECTORY_LABEL;
-import static filemanager.utils.Constants.EDIT_LABEL;
 import static filemanager.utils.Constants.FILE_LABEL;
 import static filemanager.utils.Constants.IMAGE_PREVIEW_LABEL;
 import static filemanager.utils.Constants.MODIFIED_LABEL;
 import static filemanager.utils.Constants.NO_PREVIEW_LABEL;
-import static filemanager.utils.Constants.OPEN_LABEL;
 import static filemanager.utils.Constants.PATH_LABEL;
-import static filemanager.utils.Constants.PRINT_LABEL;
 import static filemanager.utils.Constants.SIZE_LABEL;
 import static filemanager.utils.Constants.TEXT_PREVIEW_LABEL;
 import static filemanager.utils.Constants.TYPE_LABEL;
@@ -56,18 +51,14 @@ public class FileManagerView implements PreviewView {
     private ImagePanel imagePreview;
     private JScrollPane textPreviewScroll;
 
+    private FileOperationsView fileOperations;
+
     private JLabel fileName;
     private JTextField path;
     private JLabel date;
     private JLabel size;
     private JRadioButton isDirectory;
     private JRadioButton isFile;
-
-    private JButton openFile;
-    private JButton printFile;
-    private JButton editFile;
-
-    private JLabel fileStatus;
 
     public FileManagerView() {
         buildFrame();
@@ -177,51 +168,14 @@ public class FileManagerView implements PreviewView {
         return fileProperties;
     }
 
-    private JToolBar createFileOperations() {
-        JToolBar toolBar = new JToolBar();
-        toolBar.setFloatable(false);
-
-        openFile = new JButton(OPEN_LABEL);
-        openFile.setMnemonic('o');
-        toolBar.add(openFile);
-
-        editFile = new JButton(EDIT_LABEL);
-        editFile.setMnemonic('e');
-        toolBar.add(editFile);
-
-        printFile = new JButton(PRINT_LABEL);
-        printFile.setMnemonic('p');
-        toolBar.add(printFile);
-
-        fileStatus = new JLabel();
-        fileStatus.setForeground(Color.RED);
-        fileStatus.setVisible(true);
-        toolBar.add(fileStatus);
-
-        return toolBar;
-    }
-
-    public void setFileStatus(String text) {
-        fileStatus.setText(text);
-    }
-
-    public void clearFileStatus() {
-        fileStatus.setText("");
-    }
-
-    public void disableFileOperations() {
-        openFile.setEnabled(false);
-        editFile.setEnabled(false);
-        printFile.setEnabled(false);
-    }
-
     private JPanel createFileDetailsView() {
         JPanel detailView = new JPanel(new BorderLayout(3,3));
         JPanel fileView = new JPanel(new BorderLayout(3,3));
+        fileOperations = new FileOperationsView();
 
         detailView.add(createFileTable(), BorderLayout.CENTER);
 
-        fileView.add(createFileOperations(), BorderLayout.NORTH);
+        fileView.add(fileOperations, BorderLayout.NORTH);
         fileView.add(createFileProperties(), BorderLayout.CENTER);
         detailView.add(fileView, BorderLayout.SOUTH);
 
@@ -303,18 +257,6 @@ public class FileManagerView implements PreviewView {
         return isFile;
     }
 
-    public JButton getOpenFile() {
-        return openFile;
-    }
-
-    public JButton getPrintFile() {
-        return printFile;
-    }
-
-    public JButton getEditFile() {
-        return editFile;
-    }
-
     public JScrollPane getTextPreviewScroll() {
         return textPreviewScroll;
     }
@@ -335,7 +277,7 @@ public class FileManagerView implements PreviewView {
         return imagePreview;
     }
 
-    public JLabel getFileStatus() {
-        return fileStatus;
+    public FileOperationsView getFileOperations() {
+        return fileOperations;
     }
 }

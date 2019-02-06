@@ -18,7 +18,5 @@ public interface PreviewView {
 
     ImagePanel getImagePreview();
 
-    JLabel getFileStatus();
-
     void hidePreviews();
 }
