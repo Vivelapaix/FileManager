@@ -7,6 +7,7 @@ public class Constants {
 
     public static final String NO_PREVIEW_AVAILABLE_LABEL = "NO PREVIEW AVAILABLE";
     public static final String FILE_LOADING_LABEL = "File is loading...";
+    public static final String OK_LABEL = "Ok";
     public static final String FILE_IS_LARGE_FOR_PREVIEW_LABEL =
             "File is too large for preview";
 
@@ -15,8 +16,7 @@ public class Constants {
     public static final String PATH_LABEL = "Path";
     public static final String MODIFIED_LABEL = "Modified";
     public static final String SIZE_LABEL = "Size";
-    public static final String TYPE_LABEL = "Type";
-    public static final String DIRECTORY_LABEL = "Directory";
+    public static final String STATUS_LABEL = "Status";
 
     public static final String OPEN_LABEL = "Open";
     public static final String EDIT_LABEL = "Edit";

@@ -2,11 +2,11 @@ package filemanager.controller;
 
 import filemanager.exceptions.ExceptionHandler;
 import filemanager.models.FileTableModel;
-import filemanager.view.FileTreeCellRenderer;
 import filemanager.models.FileTreeModel;
 import filemanager.preview.Preview;
 import filemanager.preview.PreviewFactory;
 import filemanager.view.FileManagerView;
+import filemanager.view.FileTreeCellRenderer;
 
 import javax.swing.Icon;
 import javax.swing.JFrame;
@@ -24,7 +24,6 @@ import java.util.Date;
 import java.util.List;
 
 import static filemanager.utils.Constants.ERROR_SELECT_FILE;
-import static filemanager.utils.Constants.SOMETHING_WRONG_LABEL;
 
 public class FileManagerController implements ExceptionHandler {
 
@@ -120,7 +119,7 @@ public class FileManagerController implements ExceptionHandler {
                 error.getClass().getName(),
                 JOptionPane.ERROR_MESSAGE
         );
-        view.getFileOperations().setFileStatus(SOMETHING_WRONG_LABEL);
+        view.getFileProperties().setErrorFileStatus();
     }
 
     private File getSelectedFile() {
@@ -154,11 +153,12 @@ public class FileManagerController implements ExceptionHandler {
         Preview preview = previewFactory.createPreview(view, file, this);
         preview.show();
         view.getFilePreview().repaint();
-        view.getFileOperations().clearFileStatus();
+        view.getFileProperties().setOkFileStatus();
     }
 
     private void showChildren(final DefaultMutableTreeNode node) {
         view.getTree().setEnabled(false);
+        view.getFileProperties().setLoadingFileStatus();
 
         SwingWorker<Void, File> worker = new SwingWorker<Void, File>() {
             @Override
@@ -188,6 +188,7 @@ public class FileManagerController implements ExceptionHandler {
             @Override
             protected void done() {
                 view.getTree().setEnabled(true);
+                view.getFileProperties().setOkFileStatus();
             }
         };
         worker.execute();
@@ -200,8 +201,6 @@ public class FileManagerController implements ExceptionHandler {
         view.getFileProperties().getFilePath().setText(file.getPath());
         view.getFileProperties().getFileDate().setText(new Date(file.lastModified()).toString());
         view.getFileProperties().getFileSize().setText(file.length() + " bytes");
-        view.getFileProperties().getIsDirectory().setSelected(file.isDirectory());
-        view.getFileProperties().getIsFile().setSelected(file.isFile());
 
         view.getGuiPanel().repaint();
     }

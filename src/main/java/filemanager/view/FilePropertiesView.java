@@ -2,19 +2,21 @@ package filemanager.view;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 
-import static filemanager.utils.Constants.DIRECTORY_LABEL;
 import static filemanager.utils.Constants.FILE_LABEL;
+import static filemanager.utils.Constants.FILE_LOADING_LABEL;
 import static filemanager.utils.Constants.MODIFIED_LABEL;
+import static filemanager.utils.Constants.OK_LABEL;
 import static filemanager.utils.Constants.PATH_LABEL;
 import static filemanager.utils.Constants.SIZE_LABEL;
-import static filemanager.utils.Constants.TYPE_LABEL;
+import static filemanager.utils.Constants.SOMETHING_WRONG_LABEL;
+import static filemanager.utils.Constants.STATUS_LABEL;
 
 public class FilePropertiesView extends JPanel {
 
@@ -22,8 +24,7 @@ public class FilePropertiesView extends JPanel {
     private JTextField filePath;
     private JLabel fileDate;
     private JLabel fileSize;
-    private JRadioButton isDirectory;
-    private JRadioButton isFile;
+    private JLabel fileStatus;
 
     public FilePropertiesView() {
         super(new BorderLayout(4,2));
@@ -55,15 +56,26 @@ public class FilePropertiesView extends JPanel {
         fileSize = new JLabel();
         values.add(fileSize);
 
-        labels.add(new JLabel(TYPE_LABEL, JLabel.TRAILING));
-        JPanel flags = new JPanel(new FlowLayout(FlowLayout.LEADING,4,0));
-        isDirectory = new JRadioButton(DIRECTORY_LABEL);
-        isDirectory.setEnabled(false);
-        flags.add(isDirectory);
-        isFile = new JRadioButton(FILE_LABEL);
-        isFile.setEnabled(false);
-        flags.add(isFile);
-        values.add(flags);
+        labels.add(new JLabel(STATUS_LABEL, JLabel.TRAILING));
+        fileStatus = new JLabel();
+        fileStatus.setFont(
+                new Font(null, Font.BOLD, fileStatus.getFont().getSize()));
+        values.add(fileStatus);
+    }
+
+    public void setErrorFileStatus() {
+        fileStatus.setForeground(Color.RED);
+        fileStatus.setText(SOMETHING_WRONG_LABEL);
+    }
+
+    public void setLoadingFileStatus() {
+        fileStatus.setForeground(Color.BLUE);
+        fileStatus.setText(FILE_LOADING_LABEL);
+    }
+
+    public void setOkFileStatus() {
+        fileStatus.setForeground(Color.GREEN);
+        fileStatus.setText(OK_LABEL);
     }
 
     public JLabel getFileName() {
@@ -80,13 +92,5 @@ public class FilePropertiesView extends JPanel {
 
     public JLabel getFileSize() {
         return fileSize;
-    }
-
-    public JRadioButton getIsDirectory() {
-        return isDirectory;
-    }
-
-    public JRadioButton getIsFile() {
-        return isFile;
     }
 }
