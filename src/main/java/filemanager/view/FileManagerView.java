@@ -2,10 +2,9 @@ package filemanager.view;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -18,15 +17,9 @@ public class FileManagerView {
     private JFrame frame;
     private JPanel guiPanel;
 
-    private JTable table;
-
-    private FileOperationsView fileOperations;
-
-    private FilePropertiesView fileProperties;
-
-    private FilePreviewView filePreview;
-
     private FileTreeView fileTree;
+    private FileDetailsView fileDetails;
+    private FilePreviewView filePreview;
 
     public FileManagerView() {
         buildFrame();
@@ -44,12 +37,13 @@ public class FileManagerView {
         guiPanel = new JPanel(new BorderLayout(3,3));
         guiPanel.setBorder(new EmptyBorder(5,5,5,5));
 
-        filePreview = new FilePreviewView();
         fileTree = new FileTreeView();
+        fileDetails = new FileDetailsView();
+        filePreview = new FilePreviewView();
 
         JSplitPane sp = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
-                fileTree, createFileDetailsView());
+                fileTree, fileDetails);
         sp.setResizeWeight(0.4);
 
         JSplitPane splitPane = new JSplitPane(
@@ -63,35 +57,6 @@ public class FileManagerView {
         return guiPanel;
     }
 
-    private JScrollPane createFileTable() {
-        table = new JTable();
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setAutoCreateRowSorter(true);
-        table.setShowVerticalLines(false);
-
-        JScrollPane tableScroll = new JScrollPane(table);
-        Dimension d = tableScroll.getPreferredSize();
-        tableScroll.setPreferredSize(
-                new Dimension((int)d.getWidth(), (int)d.getHeight()/2));
-
-        return tableScroll;
-    }
-
-    private JPanel createFileDetailsView() {
-        JPanel detailView = new JPanel(new BorderLayout(3,3));
-        JPanel fileView = new JPanel(new BorderLayout(3,3));
-        fileOperations = new FileOperationsView();
-        fileProperties = new FilePropertiesView();
-
-        detailView.add(createFileTable(), BorderLayout.CENTER);
-
-        fileView.add(fileOperations, BorderLayout.NORTH);
-        fileView.add(fileProperties, BorderLayout.CENTER);
-        detailView.add(fileView, BorderLayout.SOUTH);
-
-        return  detailView;
-    }
-
     public JFrame getFrame() {
         return frame;
     }
@@ -101,11 +66,11 @@ public class FileManagerView {
     }
 
     public JTable getTable() {
-        return table;
+        return fileDetails.getTable();
     }
 
-    public FileTreeView getFileTree() {
-        return fileTree;
+    public JTree getTree() {
+        return fileTree.getTree();
     }
 
     public FilePreviewView getFilePreview() {
@@ -113,10 +78,10 @@ public class FileManagerView {
     }
 
     public FileOperationsView getFileOperations() {
-        return fileOperations;
+        return fileDetails.getFileOperations();
     }
 
     public FilePropertiesView getFileProperties() {
-        return fileProperties;
+        return fileDetails.getFileProperties();
     }
 }
