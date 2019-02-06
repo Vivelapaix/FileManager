@@ -3,6 +3,7 @@ package filemanager.preview;
 
 import filemanager.exceptions.ExceptionHandler;
 import filemanager.exceptions.FileManagerException;
+import filemanager.models.ImagePanel;
 import filemanager.view.FileManagerView;
 
 import javax.imageio.ImageIO;

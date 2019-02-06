@@ -1,6 +1,6 @@
 package filemanager.view;
 
-import filemanager.preview.ImagePanel;
+import filemanager.models.ImagePanel;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;

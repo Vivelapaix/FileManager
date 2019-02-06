@@ -1,9 +1,9 @@
 package filemanager.controller;
 
 import filemanager.exceptions.ExceptionHandler;
-import filemanager.file_table.FileTableModel;
-import filemanager.file_tree.FileTreeCellRenderer;
-import filemanager.file_tree.FileTreeModel;
+import filemanager.models.FileTableModel;
+import filemanager.view.FileTreeCellRenderer;
+import filemanager.models.FileTreeModel;
 import filemanager.preview.Preview;
 import filemanager.preview.PreviewFactory;
 import filemanager.view.FileManagerView;

@@ -1,4 +1,4 @@
-package filemanager.file_table;
+package filemanager.models;
 
 import javax.swing.ImageIcon;
 import javax.swing.filechooser.FileSystemView;
