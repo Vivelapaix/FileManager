@@ -1,11 +1,12 @@
-package filemanager;
+package filemanager.controller;
 
 import filemanager.exceptions.ExceptionHandler;
-import filemanager.file_table.FileTableModel;
-import filemanager.file_tree.FileTreeCellRenderer;
-import filemanager.file_tree.FileTreeModel;
+import filemanager.models.FileTableModel;
+import filemanager.view.FileTreeCellRenderer;
+import filemanager.models.FileTreeModel;
 import filemanager.preview.Preview;
 import filemanager.preview.PreviewFactory;
+import filemanager.view.FileManagerView;
 
 import javax.swing.Icon;
 import javax.swing.JFrame;
@@ -48,13 +49,13 @@ public class FileManagerController implements ExceptionHandler {
         view = new FileManagerView();
         view.getTree().setModel(new FileTreeModel(new DefaultMutableTreeNode()));
         view.getTable().setModel(new FileTableModel());
-        view.disableFileOperations();
+        view.getFileOperations().disableFileOperations();
     }
 
     private void enableFileOperations() {
-        view.getOpenFile().setEnabled(desktop.isSupported(Desktop.Action.OPEN));
-        view.getEditFile().setEnabled(desktop.isSupported(Desktop.Action.EDIT));
-        view.getPrintFile().setEnabled(desktop.isSupported(Desktop.Action.PRINT));
+        view.getFileOperations().getOpenFile().setEnabled(desktop.isSupported(Desktop.Action.OPEN));
+        view.getFileOperations().getEditFile().setEnabled(desktop.isSupported(Desktop.Action.EDIT));
+        view.getFileOperations().getPrintFile().setEnabled(desktop.isSupported(Desktop.Action.PRINT));
     }
 
     public JFrame createGUI() {
@@ -79,7 +80,7 @@ public class FileManagerController implements ExceptionHandler {
 
         view.getTable().getSelectionModel().addListSelectionListener(listSelectionListener);
 
-        view.getOpenFile().addActionListener(ae -> {
+        view.getFileOperations().getOpenFile().addActionListener(ae -> {
             try {
                 if (!currentFile.isDirectory()) {
                     desktop.open(currentFile);
@@ -89,7 +90,7 @@ public class FileManagerController implements ExceptionHandler {
             }
         });
 
-        view.getEditFile().addActionListener(ae -> {
+        view.getFileOperations().getEditFile().addActionListener(ae -> {
             try {
                 if (!currentFile.isDirectory()) {
                     desktop.edit(currentFile);
@@ -99,7 +100,7 @@ public class FileManagerController implements ExceptionHandler {
             }
         });
 
-        view.getPrintFile().addActionListener(ae -> {
+        view.getFileOperations().getPrintFile().addActionListener(ae -> {
             try {
                 if (!currentFile.isDirectory()) {
                     desktop.print(currentFile);
@@ -119,7 +120,7 @@ public class FileManagerController implements ExceptionHandler {
                 error.getClass().getName(),
                 JOptionPane.ERROR_MESSAGE
         );
-        view.setFileStatus(SOMETHING_WRONG_LABEL);
+        view.getFileOperations().setFileStatus(SOMETHING_WRONG_LABEL);
     }
 
     private File getSelectedFile() {
@@ -143,7 +144,7 @@ public class FileManagerController implements ExceptionHandler {
         }
 
         if (currentFile.isDirectory()) {
-            view.disableFileOperations();
+            view.getFileOperations().disableFileOperations();
         } else {
             enableFileOperations();
         }
@@ -152,8 +153,8 @@ public class FileManagerController implements ExceptionHandler {
     private void previewFile(File file) {
         Preview preview = previewFactory.createPreview(view, file, this);
         preview.show();
-        view.getPreview().repaint();
-        view.clearFileStatus();
+        view.getFilePreview().repaint();
+        view.getFileOperations().clearFileStatus();
     }
 
     private void showChildren(final DefaultMutableTreeNode node) {
@@ -194,13 +195,13 @@ public class FileManagerController implements ExceptionHandler {
 
     private void setFileDetails(File file) {
         Icon icon = fileSystemView.getSystemIcon(file);
-        view.getFileName().setIcon(icon);
-        view.getFileName().setText(fileSystemView.getSystemDisplayName(file));
-        view.getPath().setText(file.getPath());
-        view.getDate().setText(new Date(file.lastModified()).toString());
-        view.getSize().setText(file.length() + " bytes");
-        view.getIsDirectory().setSelected(file.isDirectory());
-        view.getIsFile().setSelected(file.isFile());
+        view.getFileProperties().getFileName().setIcon(icon);
+        view.getFileProperties().getFileName().setText(fileSystemView.getSystemDisplayName(file));
+        view.getFileProperties().getFilePath().setText(file.getPath());
+        view.getFileProperties().getFileDate().setText(new Date(file.lastModified()).toString());
+        view.getFileProperties().getFileSize().setText(file.length() + " bytes");
+        view.getFileProperties().getIsDirectory().setSelected(file.isDirectory());
+        view.getFileProperties().getIsFile().setSelected(file.isFile());
 
         view.getGuiPanel().repaint();
     }

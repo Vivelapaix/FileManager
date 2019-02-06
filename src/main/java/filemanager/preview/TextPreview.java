@@ -4,6 +4,7 @@ package filemanager.preview;
 import filemanager.exceptions.ExceptionHandler;
 import filemanager.exceptions.FileManagerException;
 import filemanager.utils.Constants;
+import filemanager.view.FileManagerView;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -32,7 +33,7 @@ public class TextPreview implements Preview {
     
     private static final Set<String> TEXT_EXTENSIONS = new HashSet<>(EXTENSIONS);
 
-    private final PreviewView view;
+    private final FileManagerView view;
     
     private final JScrollPane textPreviewScrollPane;
     
@@ -42,7 +43,7 @@ public class TextPreview implements Preview {
 
     private final ExceptionHandler exceptionHandler;
     
-    public TextPreview(PreviewView view, JScrollPane textPreviewScrollPane,
+    public TextPreview(FileManagerView view, JScrollPane textPreviewScrollPane,
                        JTextArea textPreview, File file,
                        ExceptionHandler exceptionHandler) {
         this.view = view;
@@ -67,10 +68,10 @@ public class TextPreview implements Preview {
 
             @Override
             protected void done() {
-                view.hidePreviews();
+                view.getFilePreview().hidePreviews();
                 textPreviewScrollPane.setVisible(true);
-                ((CardLayout)view.getPreview().getLayout())
-                        .show(view.getPreview(), Constants.TEXT_PREVIEW_LABEL);
+                ((CardLayout)view.getFilePreview().getLayout())
+                        .show(view.getFilePreview(), Constants.TEXT_PREVIEW_LABEL);
                 try {
                     textPreview.setText(get());
                 } catch (Exception e) {

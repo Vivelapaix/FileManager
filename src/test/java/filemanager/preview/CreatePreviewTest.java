@@ -1,14 +1,12 @@
 package filemanager.preview;
 
 import filemanager.exceptions.ExceptionHandler;
+import filemanager.view.FileManagerView;
+import filemanager.view.FilePreviewView;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import java.io.File;
 
 import static org.easymock.EasyMock.createMock;
@@ -22,28 +20,19 @@ public class CreatePreviewTest {
 
     private ExceptionHandler exceptionHandler;
 
-    private PreviewView view;
+    private FileManagerView view;
 
     private PreviewFactory factory;
 
     @BeforeMethod
     public void before() {
         factory = new PreviewFactory();
-        view = createMock(PreviewView.class);
+        view = createMock(FileManagerView.class);
         exceptionHandler = createMock(ExceptionHandler.class);
 
-        JLabel noPreviewLabel = createMockBuilder(JLabel.class).createMock();
-        JScrollPane textPreviewScroll = createMockBuilder(JScrollPane.class).createMock();
-        JTextArea textPreview = createMockBuilder(JTextArea.class).createMock();
-        JPanel preview = createMockBuilder(JPanel.class).createMock();
-        ImagePanel imagePreview = createMockBuilder(ImagePanel.class).createMock();
+        FilePreviewView preview = createMockBuilder(FilePreviewView.class).createMock();
 
-        expect(view.getNoPreview()).andReturn(noPreviewLabel).anyTimes();
-        expect(view.getTextPreviewScroll()).andReturn(textPreviewScroll).anyTimes();
-        expect(view.getTextPreview()).andReturn(textPreview).anyTimes();
-        expect(view.getPreview()).andReturn(preview).anyTimes();
-        expect(view.getImagePreview()).andReturn(imagePreview).anyTimes();
-
+        expect(view.getFilePreview()).andReturn(preview).anyTimes();
         replay(view);
     }
 

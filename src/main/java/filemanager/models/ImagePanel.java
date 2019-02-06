@@ -1,4 +1,4 @@
-package filemanager.preview;
+package filemanager.models;
 
 import javax.swing.JLabel;
 import java.awt.Graphics;
@@ -21,8 +21,8 @@ public class ImagePanel extends JLabel {
 
         int x1 = 0;
         int y1 = 0;
-        int x2 = 0;
-        int y2 = 0;
+        int x2;
+        int y2;
 
         if (imgWidth < labelWidth && imgHeight < labelHeight) {
             x1 = (labelWidth - imgWidth)  / 2;

@@ -1,4 +1,4 @@
-package filemanager.file_tree;
+package filemanager.models;
 
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
