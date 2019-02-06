@@ -7,12 +7,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
@@ -22,19 +20,11 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 
 import static filemanager.utils.Constants.APP_NAME;
-import static filemanager.utils.Constants.DIRECTORY_LABEL;
-import static filemanager.utils.Constants.FILE_LABEL;
 import static filemanager.utils.Constants.IMAGE_PREVIEW_LABEL;
-import static filemanager.utils.Constants.MODIFIED_LABEL;
 import static filemanager.utils.Constants.NO_PREVIEW_LABEL;
-import static filemanager.utils.Constants.PATH_LABEL;
-import static filemanager.utils.Constants.SIZE_LABEL;
 import static filemanager.utils.Constants.TEXT_PREVIEW_LABEL;
-import static filemanager.utils.Constants.TYPE_LABEL;
 
 public class FileManagerView implements PreviewView {
 
@@ -53,12 +43,7 @@ public class FileManagerView implements PreviewView {
 
     private FileOperationsView fileOperations;
 
-    private JLabel fileName;
-    private JTextField path;
-    private JLabel date;
-    private JLabel size;
-    private JRadioButton isDirectory;
-    private JRadioButton isFile;
+    private FilePropertiesView fileProperties;
 
     public FileManagerView() {
         buildFrame();
@@ -128,55 +113,16 @@ public class FileManagerView implements PreviewView {
         return tableScroll;
     }
 
-    private JPanel createFileProperties() {
-        JPanel fileProperties = new JPanel(new BorderLayout(4,2));
-        fileProperties.setBorder(new EmptyBorder(0,6,0,6));
-
-        JPanel labels = new JPanel(new GridLayout(0,1,2,2));
-        fileProperties.add(labels, BorderLayout.WEST);
-
-        JPanel values = new JPanel(new GridLayout(0,1,2,2));
-        fileProperties.add(values, BorderLayout.CENTER);
-
-        labels.add(new JLabel(FILE_LABEL, JLabel.TRAILING));
-        fileName = new JLabel();
-        values.add(fileName);
-
-        labels.add(new JLabel(PATH_LABEL, JLabel.TRAILING));
-        path = new JTextField(5);
-        path.setEditable(false);
-        values.add(path);
-
-        labels.add(new JLabel(MODIFIED_LABEL, JLabel.TRAILING));
-        date = new JLabel();
-        values.add(date);
-
-        labels.add(new JLabel(SIZE_LABEL, JLabel.TRAILING));
-        size = new JLabel();
-        values.add(size);
-
-        labels.add(new JLabel(TYPE_LABEL, JLabel.TRAILING));
-        JPanel flags = new JPanel(new FlowLayout(FlowLayout.LEADING,4,0));
-        isDirectory = new JRadioButton(DIRECTORY_LABEL);
-        isDirectory.setEnabled(false);
-        flags.add(isDirectory);
-        isFile = new JRadioButton(FILE_LABEL);
-        isFile.setEnabled(false);
-        flags.add(isFile);
-        values.add(flags);
-
-        return fileProperties;
-    }
-
     private JPanel createFileDetailsView() {
         JPanel detailView = new JPanel(new BorderLayout(3,3));
         JPanel fileView = new JPanel(new BorderLayout(3,3));
         fileOperations = new FileOperationsView();
+        fileProperties = new FilePropertiesView();
 
         detailView.add(createFileTable(), BorderLayout.CENTER);
 
         fileView.add(fileOperations, BorderLayout.NORTH);
-        fileView.add(createFileProperties(), BorderLayout.CENTER);
+        fileView.add(fileProperties, BorderLayout.CENTER);
         detailView.add(fileView, BorderLayout.SOUTH);
 
         return  detailView;
@@ -233,30 +179,6 @@ public class FileManagerView implements PreviewView {
         return table;
     }
 
-    public JLabel getFileName() {
-        return fileName;
-    }
-
-    public JTextField getPath() {
-        return path;
-    }
-
-    public JLabel getDate() {
-        return date;
-    }
-
-    public JLabel getSize() {
-        return size;
-    }
-
-    public JRadioButton getIsDirectory() {
-        return isDirectory;
-    }
-
-    public JRadioButton getIsFile() {
-        return isFile;
-    }
-
     public JScrollPane getTextPreviewScroll() {
         return textPreviewScroll;
     }
@@ -279,5 +201,9 @@ public class FileManagerView implements PreviewView {
 
     public FileOperationsView getFileOperations() {
         return fileOperations;
+    }
+
+    public FilePropertiesView getFileProperties() {
+        return fileProperties;
     }
 }

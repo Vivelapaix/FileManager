@@ -195,13 +195,13 @@ public class FileManagerController implements ExceptionHandler {
 
     private void setFileDetails(File file) {
         Icon icon = fileSystemView.getSystemIcon(file);
-        view.getFileName().setIcon(icon);
-        view.getFileName().setText(fileSystemView.getSystemDisplayName(file));
-        view.getPath().setText(file.getPath());
-        view.getDate().setText(new Date(file.lastModified()).toString());
-        view.getSize().setText(file.length() + " bytes");
-        view.getIsDirectory().setSelected(file.isDirectory());
-        view.getIsFile().setSelected(file.isFile());
+        view.getFileProperties().getFileName().setIcon(icon);
+        view.getFileProperties().getFileName().setText(fileSystemView.getSystemDisplayName(file));
+        view.getFileProperties().getFilePath().setText(file.getPath());
+        view.getFileProperties().getFileDate().setText(new Date(file.lastModified()).toString());
+        view.getFileProperties().getFileSize().setText(file.length() + " bytes");
+        view.getFileProperties().getIsDirectory().setSelected(file.isDirectory());
+        view.getFileProperties().getIsFile().setSelected(file.isFile());
 
         view.getGuiPanel().repaint();
     }
