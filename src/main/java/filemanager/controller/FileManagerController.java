@@ -1,4 +1,4 @@
-package filemanager;
+package filemanager.controller;
 
 import filemanager.exceptions.ExceptionHandler;
 import filemanager.file_table.FileTableModel;
