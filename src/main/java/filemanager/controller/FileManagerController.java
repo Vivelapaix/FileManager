@@ -153,7 +153,7 @@ public class FileManagerController implements ExceptionHandler {
     private void previewFile(File file) {
         Preview preview = previewFactory.createPreview(view, file, this);
         preview.show();
-        view.getPreview().repaint();
+        view.getFilePreview().repaint();
         view.getFileOperations().clearFileStatus();
     }
 

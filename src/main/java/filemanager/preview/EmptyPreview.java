@@ -1,6 +1,8 @@
 package filemanager.preview;
 
 
+import filemanager.view.FileManagerView;
+
 import javax.swing.JLabel;
 import java.awt.CardLayout;
 
@@ -10,19 +12,19 @@ import static filemanager.utils.Constants.NO_PREVIEW_LABEL;
 
 public class EmptyPreview implements Preview {
     
-    private final PreviewView view;
+    private final FileManagerView view;
     
     private final JLabel noPreviewLabel;
     
-    public EmptyPreview(PreviewView view, JLabel noPreviewLabel) {
+    public EmptyPreview(FileManagerView view, JLabel noPreviewLabel) {
         this.view = view;
         this.noPreviewLabel = noPreviewLabel;
     }
 
     public void show() {
-        this.view.hidePreviews();
-        ((CardLayout)this.view.getPreview().getLayout())
-                .show(view.getPreview(), NO_PREVIEW_LABEL);
+        this.view.getFilePreview().hidePreviews();
+        ((CardLayout)this.view.getFilePreview().getLayout())
+                .show(view.getFilePreview(), NO_PREVIEW_LABEL);
         this.noPreviewLabel.setText(NO_PREVIEW_AVAILABLE_LABEL);
         this.noPreviewLabel.setVisible(true);
     }

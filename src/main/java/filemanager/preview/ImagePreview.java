@@ -3,6 +3,7 @@ package filemanager.preview;
 
 import filemanager.exceptions.ExceptionHandler;
 import filemanager.exceptions.FileManagerException;
+import filemanager.view.FileManagerView;
 
 import javax.imageio.ImageIO;
 import javax.swing.SwingWorker;
@@ -33,7 +34,7 @@ public class ImagePreview implements Preview {
     
     private static final Set<String> IMAGE_EXTENSIONS = new HashSet<>(EXTENSIONS);
     
-    private final PreviewView view;
+    private final FileManagerView view;
     
     private final ImagePanel panel;
     
@@ -41,7 +42,7 @@ public class ImagePreview implements Preview {
 
     private final ExceptionHandler exceptionHandler;
     
-    public ImagePreview(PreviewView view, ImagePanel panel,
+    public ImagePreview(FileManagerView view, ImagePanel panel,
                         File file, ExceptionHandler exceptionHandler) {
         this.view = view;
         this.panel = panel;
@@ -56,8 +57,8 @@ public class ImagePreview implements Preview {
             @Override
             public BufferedImage doInBackground() throws FileManagerException {
                 try {
-                    view.hidePreviews();
-                    view.getNoPreview().setText(FILE_LOADING_LABEL);
+                    view.getFilePreview().hidePreviews();
+                    view.getFilePreview().getNoPreview().setText(FILE_LOADING_LABEL);
                     return ImageIO.read(getInputStream());
                 } catch (IOException e) {
                     throw new FileManagerException(ERROR_READ_FILE, e);
@@ -66,10 +67,10 @@ public class ImagePreview implements Preview {
 
             @Override
             protected void done() {
-                view.hidePreviews();
+                view.getFilePreview().hidePreviews();
                 panel.setVisible(true);
-                ((CardLayout)view.getPreview().getLayout())
-                        .show(view.getPreview(), IMAGE_PREVIEW_LABEL);
+                ((CardLayout)view.getFilePreview().getLayout())
+                        .show(view.getFilePreview(), IMAGE_PREVIEW_LABEL);
                 try {
                     panel.setImage(get());
                 } catch (InterruptedException|ExecutionException e) {
@@ -83,8 +84,8 @@ public class ImagePreview implements Preview {
         if (file.length() < PREVIEW_BUFFER_SIZE) {
             previewLoader.execute();
         } else {
-            view.hidePreviews();
-            view.getNoPreview().setText(FILE_IS_LARGE_FOR_PREVIEW_LABEL);
+            view.getFilePreview().hidePreviews();
+            view.getFilePreview().getNoPreview().setText(FILE_IS_LARGE_FOR_PREVIEW_LABEL);
         }
     }
 

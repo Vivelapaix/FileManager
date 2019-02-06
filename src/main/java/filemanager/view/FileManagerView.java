@@ -1,32 +1,21 @@
 package filemanager.view;
 
-import filemanager.preview.ImagePanel;
-import filemanager.preview.PreviewView;
-
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 
 import static filemanager.utils.Constants.APP_NAME;
-import static filemanager.utils.Constants.IMAGE_PREVIEW_LABEL;
-import static filemanager.utils.Constants.NO_PREVIEW_LABEL;
-import static filemanager.utils.Constants.TEXT_PREVIEW_LABEL;
 
-public class FileManagerView implements PreviewView {
+public class FileManagerView {
 
     private JFrame frame;
     private JPanel guiPanel;
@@ -35,15 +24,11 @@ public class FileManagerView implements PreviewView {
 
     private JTable table;
 
-    private JPanel preview;
-    private JLabel noPreview;
-    private JTextArea textPreview;
-    private ImagePanel imagePreview;
-    private JScrollPane textPreviewScroll;
-
     private FileOperationsView fileOperations;
 
     private FilePropertiesView fileProperties;
+
+    private FilePreviewView filePreview;
 
     public FileManagerView() {
         buildFrame();
@@ -61,6 +46,8 @@ public class FileManagerView implements PreviewView {
         guiPanel = new JPanel(new BorderLayout(3,3));
         guiPanel.setBorder(new EmptyBorder(5,5,5,5));
 
+        filePreview = new FilePreviewView();
+
         JSplitPane sp = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
                 createFileTreeView(), createFileDetailsView());
@@ -69,7 +56,7 @@ public class FileManagerView implements PreviewView {
         JSplitPane splitPane = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
                 sp,
-                createPreview());
+                filePreview);
         splitPane.setResizeWeight(0.6);
 
         guiPanel.add(splitPane, BorderLayout.CENTER);
@@ -128,41 +115,6 @@ public class FileManagerView implements PreviewView {
         return  detailView;
     }
 
-    private JPanel createPreview() {
-        preview = new JPanel(new CardLayout(3, 3));
-        preview.setBorder(BorderFactory.createLineBorder(Color.gray));
-        Dimension d = preview.getPreferredSize();
-        preview.setPreferredSize(new Dimension(200, (int)d.getHeight()));
-
-        noPreview = new JLabel();
-        noPreview.setHorizontalAlignment(JLabel.CENTER);
-        noPreview.setVisible(false);
-
-        textPreview = new JTextArea();
-        textPreview.setWrapStyleWord(true);
-        textPreview.setLineWrap(true);
-        textPreview.setEditable(false);
-        textPreviewScroll = new JScrollPane(textPreview,
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        textPreviewScroll.setVisible(false);
-
-        imagePreview = new ImagePanel();
-        imagePreview.setVisible(false);
-
-        preview.add(noPreview, NO_PREVIEW_LABEL);
-        preview.add(textPreviewScroll, TEXT_PREVIEW_LABEL);
-        preview.add(imagePreview, IMAGE_PREVIEW_LABEL);
-
-        return preview;
-    }
-
-    public void hidePreviews() {
-        noPreview.setVisible(false);
-        textPreviewScroll.setVisible(false);
-        imagePreview.setVisible(false);
-    }
-
     public JFrame getFrame() {
         return frame;
     }
@@ -179,24 +131,8 @@ public class FileManagerView implements PreviewView {
         return table;
     }
 
-    public JScrollPane getTextPreviewScroll() {
-        return textPreviewScroll;
-    }
-
-    public JPanel getPreview() {
-        return preview;
-    }
-
-    public JLabel getNoPreview() {
-        return noPreview;
-    }
-
-    public JTextArea getTextPreview() {
-        return textPreview;
-    }
-
-    public ImagePanel getImagePreview() {
-        return imagePreview;
+    public FilePreviewView getFilePreview() {
+        return filePreview;
     }
 
     public FileOperationsView getFileOperations() {
