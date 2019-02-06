@@ -13,7 +13,7 @@ public class FileTableModel extends AbstractTableModel {
     private String[] columns = {
             "Icon",
             "File",
-            "Path/name",
+            "Type",
             "Size",
             "Modified",
     };
@@ -34,7 +34,7 @@ public class FileTableModel extends AbstractTableModel {
             case 1:
                 return fileSystemView.getSystemDisplayName(file);
             case 2:
-                return file.getPath();
+                return getFileExtension(file);
             case 3:
                 return file.length();
             case 4:
@@ -57,12 +57,6 @@ public class FileTableModel extends AbstractTableModel {
                 return Long.class;
             case 4:
                 return Date.class;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-                return Boolean.class;
         }
         return String.class;
     }
@@ -86,5 +80,24 @@ public class FileTableModel extends AbstractTableModel {
 
     public boolean isCellEditable(int row, int column) {
         return false;
+    }
+
+    private String getFileExtension(File file) {
+        String extension = "";
+
+        try {
+            if (file != null && file.exists()) {
+                if (file.isDirectory()) {
+                    return "Folder";
+                }
+
+                String name = fileSystemView.getSystemDisplayName(file);
+                extension = name.substring(name.lastIndexOf("."));
+            }
+        } catch (Exception e) {
+            extension = "Unknown";
+        }
+
+        return extension;
     }
 }
