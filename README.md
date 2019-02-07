@@ -17,15 +17,25 @@ This application has three panels:
 ## Building File Manager
 
 Source code is available from https://github.com/Vivelapaix/FileManager by either cloning or downloading a zip file into `<SOURCE_HOME>`.
+* Using IntelliJ IDEA
+  #### Opening source code for build
+  Using IntelliJ IDEA **File | Open**, select the `<SOURCE_HOME>/FileManager` directory.
 
-#### Opening source code for build
-Using IntelliJ IDEA **File | Open**, select the `<SOURCE_HOME>` directory.
+  #### Building configuration
+  JDK version 1.8 or newer is required for building and developing.
 
-#### Building configuration
-JDK version 1.8 or newer is required for building and developing.
+  #### Import Gradle project
+  For the first time after cloning or downloading, choose **Event Log** from the main menu, click **Import Gradle project**.
+  Check **Use auto-import**, specify **Gradle JVM** and click **OK**.
 
-#### Building source code
-To build application from source, choose **Build | Build Project** from the main menu.
-
-#### Running File Manager
-To run application built from source, choose **Run | Run** from the main menu. 
+  #### Running File Manager
+  To run application built from source, choose `./FileManager/src/main/java/filemanager/Main.java`, right click on this file,     choose **Run \'Main.main()\'**. 
+* Using Gradle
+  #### Opening source code for build
+  Navigate to `<SOURCE_HOME>/FileManager` directory.
+  
+  #### Build and test 
+  Run `./gradlew build` or run without test `./gradlew build -x test`.
+  
+  #### Running File Manager
+  Run `java -jar build/libs/FileManager-1.0-SNAPSHOT.jar`
