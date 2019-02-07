@@ -7,6 +7,7 @@ import filemanager.preview.Preview;
 import filemanager.preview.PreviewFactory;
 import filemanager.view.FileManagerView;
 import filemanager.view.FileTreeCellRenderer;
+import org.apache.log4j.Logger;
 
 import javax.swing.Icon;
 import javax.swing.JFrame;
@@ -26,6 +27,8 @@ import java.util.List;
 import static filemanager.utils.Constants.ERROR_SELECT_FILE;
 
 public class FileManagerController implements ExceptionHandler {
+
+    private static final Logger logger = Logger.getLogger(FileManagerController.class);
 
     private FileManagerView view;
 
@@ -115,6 +118,7 @@ public class FileManagerController implements ExceptionHandler {
     }
 
     public void handleException(String message, Exception error) {
+        logger.error(message, error);
         JOptionPane.showMessageDialog(
                 view.getGuiPanel(),
                 message,
