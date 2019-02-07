@@ -22,7 +22,7 @@ public class FileTableModel extends AbstractTableModel {
         this(new File[0]);
     }
 
-    public FileTableModel(File[] files) {
+    private FileTableModel(File[] files) {
         this.files = files;
     }
 

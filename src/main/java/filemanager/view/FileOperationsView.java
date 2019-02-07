@@ -13,7 +13,7 @@ public class FileOperationsView extends JToolBar {
     private JButton printFile;
     private JButton editFile;
 
-    public FileOperationsView() {
+    FileOperationsView() {
         setFloatable(false);
         initFileOperations();
     }

@@ -43,9 +43,9 @@ public class TextPreview implements Preview {
 
     private final ExceptionHandler exceptionHandler;
     
-    public TextPreview(FileManagerView view, JScrollPane textPreviewScrollPane,
-                       JTextArea textPreview, File file,
-                       ExceptionHandler exceptionHandler) {
+    TextPreview(FileManagerView view, JScrollPane textPreviewScrollPane,
+                JTextArea textPreview, File file,
+                ExceptionHandler exceptionHandler) {
         this.view = view;
         this.textPreviewScrollPane = textPreviewScrollPane;
         this.textPreview = textPreview;

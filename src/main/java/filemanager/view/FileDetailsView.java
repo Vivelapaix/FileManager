@@ -7,7 +7,7 @@ import javax.swing.ListSelectionModel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-public class FileDetailsView extends JPanel {
+class FileDetailsView extends JPanel {
 
     private JTable table;
 
@@ -15,7 +15,7 @@ public class FileDetailsView extends JPanel {
 
     private FilePropertiesView fileProperties;
 
-    public FileDetailsView() {
+    FileDetailsView() {
         super(new BorderLayout(3,3));
         initFileDetails();
     }

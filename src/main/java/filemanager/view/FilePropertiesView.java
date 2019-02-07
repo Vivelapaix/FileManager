@@ -26,7 +26,7 @@ public class FilePropertiesView extends JPanel {
     private JLabel fileSize;
     private JLabel fileStatus;
 
-    public FilePropertiesView() {
+    FilePropertiesView() {
         super(new BorderLayout(4,2));
         setBorder(new EmptyBorder(0,6,0,6));
         initFileProperties();

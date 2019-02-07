@@ -22,7 +22,7 @@ public class FilePreviewView extends JPanel {
     private ImagePanel imagePreview;
     private JScrollPane textPreviewScroll;
 
-    public FilePreviewView() {
+    FilePreviewView() {
         super(new CardLayout(3, 3));
         setBorder(BorderFactory.createLineBorder(Color.gray));
         Dimension d = getPreferredSize();
