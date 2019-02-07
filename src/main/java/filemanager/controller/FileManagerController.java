@@ -28,7 +28,8 @@ import static filemanager.utils.Constants.ERROR_SELECT_FILE;
 
 public class FileManagerController implements ExceptionHandler {
 
-    private static final Logger logger = Logger.getLogger(FileManagerController.class);
+    private static final Logger logger =
+            Logger.getLogger(FileManagerController.class.getName());
 
     private FileManagerView view;
 
