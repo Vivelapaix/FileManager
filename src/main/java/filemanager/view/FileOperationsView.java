@@ -1,10 +1,7 @@
 package filemanager.view;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JToolBar;
-
-import java.awt.Color;
 
 import static filemanager.utils.Constants.EDIT_LABEL;
 import static filemanager.utils.Constants.OPEN_LABEL;
@@ -16,8 +13,6 @@ public class FileOperationsView extends JToolBar {
     private JButton printFile;
     private JButton editFile;
 
-    private JLabel fileStatus;
-
     public FileOperationsView() {
         setFloatable(false);
         initFileOperations();
@@ -27,7 +22,6 @@ public class FileOperationsView extends JToolBar {
         buildOpenFileButton();
         buildEditFileButton();
         buildPrintFileButton();
-        buildFileStatusLabel();
     }
 
     private void buildOpenFileButton() {
@@ -48,21 +42,6 @@ public class FileOperationsView extends JToolBar {
         add(printFile);
     }
 
-    private void buildFileStatusLabel() {
-        fileStatus = new JLabel();
-        fileStatus.setForeground(Color.RED);
-        fileStatus.setVisible(true);
-        add(fileStatus);
-    }
-
-    public void setFileStatus(String text) {
-        fileStatus.setText(text);
-    }
-
-    public void clearFileStatus() {
-        fileStatus.setText("");
-    }
-
     public void disableFileOperations() {
         openFile.setEnabled(false);
         editFile.setEnabled(false);
@@ -79,9 +58,5 @@ public class FileOperationsView extends JToolBar {
 
     public JButton getEditFile() {
         return editFile;
-    }
-
-    public JLabel getFileStatus() {
-        return fileStatus;
     }
 }
