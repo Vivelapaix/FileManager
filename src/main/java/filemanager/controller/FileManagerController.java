@@ -29,13 +29,13 @@ public class FileManagerController implements ExceptionHandler {
 
     private FileManagerView view;
 
-    private PreviewFactory previewFactory;
+    private final PreviewFactory previewFactory;
 
     private File currentFile;
 
-    private FileSystemView fileSystemView;
+    private final FileSystemView fileSystemView;
     private ListSelectionListener listSelectionListener;
-    private Desktop desktop;
+    private final Desktop desktop;
 
     public FileManagerController() {
         fileSystemView = FileSystemView.getFileSystemView();

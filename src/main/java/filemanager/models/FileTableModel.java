@@ -9,8 +9,8 @@ import java.util.Date;
 public class FileTableModel extends AbstractTableModel {
 
     private File[] files;
-    private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
-    private String[] columns = {
+    private final FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+    private final String[] columns = {
             "Icon",
             "File",
             "Type",

@@ -74,6 +74,7 @@ public class TextPreview implements Preview {
                         .show(view.getFilePreview(), Constants.TEXT_PREVIEW_LABEL);
                 try {
                     textPreview.setText(get());
+                    textPreview.setCaretPosition(0);
                 } catch (Exception e) {
                     exceptionHandler.handleException(e.getMessage(), e);
                 }
