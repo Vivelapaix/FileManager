@@ -13,9 +13,9 @@ class Main {
 
     public static void main(String[] args) {
 
-        SwingUtilities.invokeLater(() -> {
+        systemLookAndFeel();
 
-            systemLookAndFeel();
+        SwingUtilities.invokeLater(() -> {
 
             FileManagerController manager = new FileManagerController();
             JFrame frame = manager.createGUI();

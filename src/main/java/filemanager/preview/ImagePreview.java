@@ -77,7 +77,8 @@ public class ImagePreview implements Preview {
                 } catch (InterruptedException|ExecutionException e) {
                     exceptionHandler.handleException(e.getMessage(), e);
                 } catch (Exception e) {
-                    exceptionHandler.handleException(e.getMessage(), e);
+                    exceptionHandler.handleException(
+                            "Unexpected exception: " + e.getMessage(), e);
                 }
             }
         };
