@@ -57,9 +57,12 @@ public class FileManagerController implements ExceptionHandler {
     }
 
     private void enableFileOperations() {
-        view.getFileOperations().getOpenFile().setEnabled(desktop.isSupported(Desktop.Action.OPEN));
-        view.getFileOperations().getEditFile().setEnabled(desktop.isSupported(Desktop.Action.EDIT));
-        view.getFileOperations().getPrintFile().setEnabled(desktop.isSupported(Desktop.Action.PRINT));
+        view.getFileOperations().getOpenFile()
+                .setEnabled(desktop.isSupported(Desktop.Action.OPEN));
+        view.getFileOperations().getEditFile()
+                .setEnabled(desktop.isSupported(Desktop.Action.EDIT));
+        view.getFileOperations().getPrintFile()
+                .setEnabled(desktop.isSupported(Desktop.Action.PRINT));
     }
 
     public JFrame createGUI() {
@@ -82,7 +85,15 @@ public class FileManagerController implements ExceptionHandler {
             }
         };
 
-        view.getTable().getSelectionModel().addListSelectionListener(listSelectionListener);
+        view.getTable().getSelectionModel()
+                .addListSelectionListener(listSelectionListener);
+
+        initFileOperationsAction();
+
+        return view.getFrame();
+    }
+
+    private void initFileOperationsAction() {
 
         view.getFileOperations().getOpenFile().addActionListener(ae -> {
             try {
@@ -113,8 +124,6 @@ public class FileManagerController implements ExceptionHandler {
                 handleException(e.getMessage(), e);
             }
         });
-
-        return view.getFrame();
     }
 
     public void handleException(String message, Exception error) {
@@ -129,7 +138,8 @@ public class FileManagerController implements ExceptionHandler {
     }
 
     private File getSelectedFile() {
-        int selectedRow = view.getTable().getSelectionModel().getLeadSelectionIndex();
+        int selectedRow = view.getTable().getSelectionModel()
+                .getLeadSelectionIndex();
         int rowCount = view.getTable().getModel().getRowCount();
 
         if (selectedRow >= 0 && selectedRow < rowCount) {
@@ -203,9 +213,11 @@ public class FileManagerController implements ExceptionHandler {
     private void setFileDetails(File file) {
         Icon icon = fileSystemView.getSystemIcon(file);
         view.getFileProperties().getFileName().setIcon(icon);
-        view.getFileProperties().getFileName().setText(fileSystemView.getSystemDisplayName(file));
+        view.getFileProperties().getFileName()
+                .setText(fileSystemView.getSystemDisplayName(file));
         view.getFileProperties().getFilePath().setText(file.getPath());
-        view.getFileProperties().getFileDate().setText(new Date(file.lastModified()).toString());
+        view.getFileProperties().getFileDate()
+                .setText(new Date(file.lastModified()).toString());
         view.getFileProperties().getFileSize().setText(file.length() + " bytes");
 
         view.getGuiPanel().repaint();
@@ -216,9 +228,11 @@ public class FileManagerController implements ExceptionHandler {
             if (view.getTable() == null) {
                 view.getTable().setModel(new FileTableModel());
             }
-            view.getTable().getSelectionModel().removeListSelectionListener(listSelectionListener);
+            view.getTable().getSelectionModel()
+                    .removeListSelectionListener(listSelectionListener);
             ((FileTableModel)view.getTable().getModel()).setFiles(files);
-            view.getTable().getSelectionModel().addListSelectionListener(listSelectionListener);
+            view.getTable().getSelectionModel()
+                    .addListSelectionListener(listSelectionListener);
         });
     }
 }
