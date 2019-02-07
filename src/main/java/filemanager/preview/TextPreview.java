@@ -43,9 +43,9 @@ public class TextPreview implements Preview {
 
     private final ExceptionHandler exceptionHandler;
     
-    public TextPreview(FileManagerView view, JScrollPane textPreviewScrollPane,
-                       JTextArea textPreview, File file,
-                       ExceptionHandler exceptionHandler) {
+    TextPreview(FileManagerView view, JScrollPane textPreviewScrollPane,
+                JTextArea textPreview, File file,
+                ExceptionHandler exceptionHandler) {
         this.view = view;
         this.textPreviewScrollPane = textPreviewScrollPane;
         this.textPreview = textPreview;
@@ -74,6 +74,7 @@ public class TextPreview implements Preview {
                         .show(view.getFilePreview(), Constants.TEXT_PREVIEW_LABEL);
                 try {
                     textPreview.setText(get());
+                    textPreview.setCaretPosition(0);
                 } catch (Exception e) {
                     exceptionHandler.handleException(e.getMessage(), e);
                 }

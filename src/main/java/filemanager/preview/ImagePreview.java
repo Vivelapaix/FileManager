@@ -43,8 +43,8 @@ public class ImagePreview implements Preview {
 
     private final ExceptionHandler exceptionHandler;
     
-    public ImagePreview(FileManagerView view, ImagePanel panel,
-                        File file, ExceptionHandler exceptionHandler) {
+    ImagePreview(FileManagerView view, ImagePanel panel,
+                 File file, ExceptionHandler exceptionHandler) {
         this.view = view;
         this.panel = panel;
         this.file = file;
@@ -77,7 +77,8 @@ public class ImagePreview implements Preview {
                 } catch (InterruptedException|ExecutionException e) {
                     exceptionHandler.handleException(e.getMessage(), e);
                 } catch (Exception e) {
-                    exceptionHandler.handleException(e.getMessage(), e);
+                    exceptionHandler.handleException(
+                            "Unexpected exception: " + e.getMessage(), e);
                 }
             }
         };

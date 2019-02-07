@@ -16,7 +16,7 @@ public class EmptyPreview implements Preview {
     
     private final JLabel noPreviewLabel;
     
-    public EmptyPreview(FileManagerView view, JLabel noPreviewLabel) {
+    EmptyPreview(FileManagerView view, JLabel noPreviewLabel) {
         this.view = view;
         this.noPreviewLabel = noPreviewLabel;
     }

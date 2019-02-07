@@ -7,11 +7,11 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-public class FileTreeView extends JPanel {
+class FileTreeView extends JPanel {
 
     private JTree tree;
 
-    public FileTreeView() {
+    FileTreeView() {
         super(new BorderLayout(3,3));
         buildFileTree();
     }

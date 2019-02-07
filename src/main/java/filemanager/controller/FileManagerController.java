@@ -2,11 +2,12 @@ package filemanager.controller;
 
 import filemanager.exceptions.ExceptionHandler;
 import filemanager.models.FileTableModel;
-import filemanager.view.FileTreeCellRenderer;
 import filemanager.models.FileTreeModel;
 import filemanager.preview.Preview;
 import filemanager.preview.PreviewFactory;
 import filemanager.view.FileManagerView;
+import filemanager.view.FileTreeCellRenderer;
+import org.apache.log4j.Logger;
 
 import javax.swing.Icon;
 import javax.swing.JFrame;
@@ -24,19 +25,22 @@ import java.util.Date;
 import java.util.List;
 
 import static filemanager.utils.Constants.ERROR_SELECT_FILE;
-import static filemanager.utils.Constants.SOMETHING_WRONG_LABEL;
 
 public class FileManagerController implements ExceptionHandler {
 
+    private static final Logger logger = Logger.getLogger(FileManagerController.class);
+
     private FileManagerView view;
 
-    private PreviewFactory previewFactory;
+    private final PreviewFactory previewFactory;
+
+    private final FileSystemView fileSystemView;
+
+    private final Desktop desktop;
+
+    private ListSelectionListener listSelectionListener;
 
     private File currentFile;
-
-    private FileSystemView fileSystemView;
-    private ListSelectionListener listSelectionListener;
-    private Desktop desktop;
 
     public FileManagerController() {
         fileSystemView = FileSystemView.getFileSystemView();
@@ -53,9 +57,12 @@ public class FileManagerController implements ExceptionHandler {
     }
 
     private void enableFileOperations() {
-        view.getFileOperations().getOpenFile().setEnabled(desktop.isSupported(Desktop.Action.OPEN));
-        view.getFileOperations().getEditFile().setEnabled(desktop.isSupported(Desktop.Action.EDIT));
-        view.getFileOperations().getPrintFile().setEnabled(desktop.isSupported(Desktop.Action.PRINT));
+        view.getFileOperations().getOpenFile()
+                .setEnabled(desktop.isSupported(Desktop.Action.OPEN));
+        view.getFileOperations().getEditFile()
+                .setEnabled(desktop.isSupported(Desktop.Action.EDIT));
+        view.getFileOperations().getPrintFile()
+                .setEnabled(desktop.isSupported(Desktop.Action.PRINT));
     }
 
     public JFrame createGUI() {
@@ -78,7 +85,15 @@ public class FileManagerController implements ExceptionHandler {
             }
         };
 
-        view.getTable().getSelectionModel().addListSelectionListener(listSelectionListener);
+        view.getTable().getSelectionModel()
+                .addListSelectionListener(listSelectionListener);
+
+        initFileOperationsAction();
+
+        return view.getFrame();
+    }
+
+    private void initFileOperationsAction() {
 
         view.getFileOperations().getOpenFile().addActionListener(ae -> {
             try {
@@ -109,22 +124,22 @@ public class FileManagerController implements ExceptionHandler {
                 handleException(e.getMessage(), e);
             }
         });
-
-        return view.getFrame();
     }
 
     public void handleException(String message, Exception error) {
+        logger.error(message, error);
         JOptionPane.showMessageDialog(
                 view.getGuiPanel(),
                 message,
                 error.getClass().getName(),
                 JOptionPane.ERROR_MESSAGE
         );
-        view.getFileOperations().setFileStatus(SOMETHING_WRONG_LABEL);
+        view.getFileProperties().setErrorFileStatus();
     }
 
     private File getSelectedFile() {
-        int selectedRow = view.getTable().getSelectionModel().getLeadSelectionIndex();
+        int selectedRow = view.getTable().getSelectionModel()
+                .getLeadSelectionIndex();
         int rowCount = view.getTable().getModel().getRowCount();
 
         if (selectedRow >= 0 && selectedRow < rowCount) {
@@ -154,11 +169,12 @@ public class FileManagerController implements ExceptionHandler {
         Preview preview = previewFactory.createPreview(view, file, this);
         preview.show();
         view.getFilePreview().repaint();
-        view.getFileOperations().clearFileStatus();
+        view.getFileProperties().setOkFileStatus();
     }
 
     private void showChildren(final DefaultMutableTreeNode node) {
         view.getTree().setEnabled(false);
+        view.getFileProperties().setLoadingFileStatus();
 
         SwingWorker<Void, File> worker = new SwingWorker<Void, File>() {
             @Override
@@ -188,6 +204,7 @@ public class FileManagerController implements ExceptionHandler {
             @Override
             protected void done() {
                 view.getTree().setEnabled(true);
+                view.getFileProperties().setOkFileStatus();
             }
         };
         worker.execute();
@@ -196,12 +213,12 @@ public class FileManagerController implements ExceptionHandler {
     private void setFileDetails(File file) {
         Icon icon = fileSystemView.getSystemIcon(file);
         view.getFileProperties().getFileName().setIcon(icon);
-        view.getFileProperties().getFileName().setText(fileSystemView.getSystemDisplayName(file));
+        view.getFileProperties().getFileName()
+                .setText(fileSystemView.getSystemDisplayName(file));
         view.getFileProperties().getFilePath().setText(file.getPath());
-        view.getFileProperties().getFileDate().setText(new Date(file.lastModified()).toString());
+        view.getFileProperties().getFileDate()
+                .setText(new Date(file.lastModified()).toString());
         view.getFileProperties().getFileSize().setText(file.length() + " bytes");
-        view.getFileProperties().getIsDirectory().setSelected(file.isDirectory());
-        view.getFileProperties().getIsFile().setSelected(file.isFile());
 
         view.getGuiPanel().repaint();
     }
@@ -211,9 +228,11 @@ public class FileManagerController implements ExceptionHandler {
             if (view.getTable() == null) {
                 view.getTable().setModel(new FileTableModel());
             }
-            view.getTable().getSelectionModel().removeListSelectionListener(listSelectionListener);
+            view.getTable().getSelectionModel()
+                    .removeListSelectionListener(listSelectionListener);
             ((FileTableModel)view.getTable().getModel()).setFiles(files);
-            view.getTable().getSelectionModel().addListSelectionListener(listSelectionListener);
+            view.getTable().getSelectionModel()
+                    .addListSelectionListener(listSelectionListener);
         });
     }
 }
