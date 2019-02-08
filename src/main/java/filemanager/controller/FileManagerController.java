@@ -213,8 +213,8 @@ public class FileManagerController implements ExceptionHandler {
                 chunks.stream()
                         .sorted((o1, o2) -> o1.getName()
                                 .compareToIgnoreCase(o2.getName()))
-                        .forEach(child -> node
-                                .add(new DefaultMutableTreeNode(child)));
+                        .map(DefaultMutableTreeNode::new)
+                        .forEach(node::add);
             }
 
             @Override

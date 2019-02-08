@@ -5,8 +5,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import java.io.File;
+import java.util.Arrays;
 
 public class FileTreeModel extends DefaultTreeModel {
+
     public FileTreeModel(TreeNode root) {
         super(root);
 
@@ -17,12 +19,11 @@ public class FileTreeModel extends DefaultTreeModel {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
             ((DefaultMutableTreeNode)root).add(node);
 
-            File[] files = fileSystemView.getFiles(fileSystemRoot, true);
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    node.add(new DefaultMutableTreeNode(file));
-                }
-            }
+            Arrays.stream(fileSystemView.getFiles(fileSystemRoot, true))
+                    .sorted((o1, o2) -> o1.getName()
+                            .compareToIgnoreCase(o2.getName()))
+                    .map(DefaultMutableTreeNode::new)
+                    .forEach(node::add);
         }
     }
 }
