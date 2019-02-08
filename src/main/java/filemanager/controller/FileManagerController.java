@@ -176,23 +176,34 @@ public class FileManagerController implements ExceptionHandler {
     private void showDirectory(final DefaultMutableTreeNode node) {
         view.getTree().setEnabled(false);
         view.getFileProperties().setLoadingFileStatus();
+        view.getGuiPanel().repaint();
 
         SwingWorker<Void, File> worker = new SwingWorker<Void, File>() {
             @Override
             public Void doInBackground() {
                 File file = (File) node.getUserObject();
 
-                File[] files = file.isDirectory() ?
-                        fileSystemView.getFiles(file, true) :
-                        fileSystemView.getFiles(file.getParentFile(), true);
-
-                if (node.isLeaf()) {
-                    for (File child : files) {
-                        publish(child);
-                    }
+                if (file.isFile() && ((FileTableModel)view.getTable().getModel())
+                        .getCurrentDirectory().equals(file.getParentFile())) {
+                    return null;
                 }
 
-                setTableData(files);
+                File[] files;
+
+                if (file.isDirectory()) {
+                    files = fileSystemView.getFiles(file, true);
+
+                    if (node.isLeaf()) {
+                        for (File child : files) {
+                            publish(child);
+                        }
+                    }
+                } else {
+                    file = file.getParentFile();
+                    files = fileSystemView.getFiles(file, true);
+                }
+
+                setTableData(files, file);
 
                 return null;
             }
@@ -208,6 +219,7 @@ public class FileManagerController implements ExceptionHandler {
             protected void done() {
                 view.getTree().setEnabled(true);
                 view.getFileProperties().setOkFileStatus();
+                view.getGuiPanel().repaint();
             }
         };
         worker.execute();
@@ -226,14 +238,15 @@ public class FileManagerController implements ExceptionHandler {
         view.getGuiPanel().repaint();
     }
 
-    private void setTableData(final File[] files) {
+    private void setTableData(final File[] files, final File currentDirectory) {
         SwingUtilities.invokeLater(() -> {
             if (view.getTable() == null) {
                 view.getTable().setModel(new FileTableModel());
             }
             view.getTable().getSelectionModel()
                     .removeListSelectionListener(listSelectionListener);
-            ((FileTableModel)view.getTable().getModel()).setFiles(files);
+            ((FileTableModel)view.getTable().getModel())
+                    .setFiles(files, currentDirectory);
             view.getTable().getSelectionModel()
                     .addListSelectionListener(listSelectionListener);
         });
