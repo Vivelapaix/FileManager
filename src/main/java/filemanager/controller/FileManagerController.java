@@ -71,7 +71,7 @@ public class FileManagerController implements ExceptionHandler {
         TreeSelectionListener treeSelectionListener = tse -> {
             DefaultMutableTreeNode node =
                     (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
-            showChildren(node);
+            showDirectory(node);
             updateView((File)node.getUserObject());
         };
 
@@ -173,7 +173,7 @@ public class FileManagerController implements ExceptionHandler {
         view.getFileProperties().setOkFileStatus();
     }
 
-    private void showChildren(final DefaultMutableTreeNode node) {
+    private void showDirectory(final DefaultMutableTreeNode node) {
         view.getTree().setEnabled(false);
         view.getFileProperties().setLoadingFileStatus();
 
@@ -181,15 +181,19 @@ public class FileManagerController implements ExceptionHandler {
             @Override
             public Void doInBackground() {
                 File file = (File) node.getUserObject();
-                if (file.isDirectory()) {
-                    File[] files = fileSystemView.getFiles(file, true);
-                    if (node.isLeaf()) {
-                        for (File child : files) {
-                            publish(child);
-                        }
+
+                File[] files = file.isDirectory() ?
+                        fileSystemView.getFiles(file, true) :
+                        fileSystemView.getFiles(file.getParentFile(), true);
+
+                if (node.isLeaf()) {
+                    for (File child : files) {
+                        publish(child);
                     }
-                    setTableData(files);
                 }
+
+                setTableData(files);
+
                 return null;
             }
 
