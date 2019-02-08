@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class FileTableModel extends AbstractTableModel {
 
+    private File currentDirectory;
     private File[] files;
     private final FileSystemView fileSystemView = FileSystemView.getFileSystemView();
     private final String[] columns = {
@@ -73,8 +74,9 @@ public class FileTableModel extends AbstractTableModel {
         return files[row];
     }
 
-    public void setFiles(File[] files) {
+    public void setFiles(File[] files, File currentDirectory) {
         this.files = files;
+        this.currentDirectory = currentDirectory;
         fireTableDataChanged();
     }
 
@@ -99,5 +101,9 @@ public class FileTableModel extends AbstractTableModel {
         }
 
         return extension;
+    }
+
+    public File getCurrentDirectory() {
+        return currentDirectory;
     }
 }

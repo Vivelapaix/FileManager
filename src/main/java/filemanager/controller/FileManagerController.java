@@ -71,7 +71,7 @@ public class FileManagerController implements ExceptionHandler {
         TreeSelectionListener treeSelectionListener = tse -> {
             DefaultMutableTreeNode node =
                     (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
-            showChildren(node);
+            showDirectory(node);
             updateView((File)node.getUserObject());
         };
 
@@ -173,39 +173,55 @@ public class FileManagerController implements ExceptionHandler {
         view.getFileProperties().setOkFileStatus();
     }
 
-    private void showChildren(final DefaultMutableTreeNode node) {
+    private void showDirectory(final DefaultMutableTreeNode node) {
         view.getTree().setEnabled(false);
         view.getFileProperties().setLoadingFileStatus();
+        view.getGuiPanel().repaint();
 
         SwingWorker<Void, File> worker = new SwingWorker<Void, File>() {
             @Override
             public Void doInBackground() {
                 File file = (File) node.getUserObject();
+
+                if (file.isFile() && ((FileTableModel)view.getTable().getModel())
+                        .getCurrentDirectory().equals(file.getParentFile())) {
+                    return null;
+                }
+
+                File[] files;
+
                 if (file.isDirectory()) {
-                    File[] files = fileSystemView.getFiles(file, true);
-                    if (node.isLeaf()) {
+                    files = fileSystemView.getFiles(file, true);
+
+                    if (node.isLeaf() || node.getChildCount() != files.length) {
                         for (File child : files) {
-                            if (child.isDirectory()) {
-                                publish(child);
-                            }
+                            publish(child);
                         }
                     }
-                    setTableData(files);
+                } else {
+                    file = file.getParentFile();
+                    files = fileSystemView.getFiles(file, true);
                 }
+
+                setTableData(files, file);
+
                 return null;
             }
 
             @Override
             protected void process(List<File> chunks) {
-                for (File child : chunks) {
-                    node.add(new DefaultMutableTreeNode(child));
-                }
+                chunks.stream()
+                        .sorted((o1, o2) -> o1.getName()
+                                .compareToIgnoreCase(o2.getName()))
+                        .map(DefaultMutableTreeNode::new)
+                        .forEach(node::add);
             }
 
             @Override
             protected void done() {
                 view.getTree().setEnabled(true);
                 view.getFileProperties().setOkFileStatus();
+                view.getGuiPanel().repaint();
             }
         };
         worker.execute();
@@ -224,14 +240,15 @@ public class FileManagerController implements ExceptionHandler {
         view.getGuiPanel().repaint();
     }
 
-    private void setTableData(final File[] files) {
+    private void setTableData(final File[] files, final File currentDirectory) {
         SwingUtilities.invokeLater(() -> {
             if (view.getTable() == null) {
                 view.getTable().setModel(new FileTableModel());
             }
             view.getTable().getSelectionModel()
                     .removeListSelectionListener(listSelectionListener);
-            ((FileTableModel)view.getTable().getModel()).setFiles(files);
+            ((FileTableModel)view.getTable().getModel())
+                    .setFiles(files, currentDirectory);
             view.getTable().getSelectionModel()
                     .addListSelectionListener(listSelectionListener);
         });
