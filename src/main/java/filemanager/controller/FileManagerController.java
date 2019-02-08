@@ -193,7 +193,7 @@ public class FileManagerController implements ExceptionHandler {
                 if (file.isDirectory()) {
                     files = fileSystemView.getFiles(file, true);
 
-                    if (node.isLeaf()) {
+                    if (node.isLeaf() || node.getChildCount() != files.length) {
                         for (File child : files) {
                             publish(child);
                         }
@@ -210,9 +210,11 @@ public class FileManagerController implements ExceptionHandler {
 
             @Override
             protected void process(List<File> chunks) {
-                for (File child : chunks) {
-                    node.add(new DefaultMutableTreeNode(child));
-                }
+                chunks.stream()
+                        .sorted((o1, o2) -> o1.getName()
+                                .compareToIgnoreCase(o2.getName()))
+                        .forEach(child -> node
+                                .add(new DefaultMutableTreeNode(child)));
             }
 
             @Override
