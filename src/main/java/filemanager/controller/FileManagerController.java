@@ -185,9 +185,7 @@ public class FileManagerController implements ExceptionHandler {
                     File[] files = fileSystemView.getFiles(file, true);
                     if (node.isLeaf()) {
                         for (File child : files) {
-                            if (child.isDirectory()) {
-                                publish(child);
-                            }
+                            publish(child);
                         }
                     }
                     setTableData(files);
