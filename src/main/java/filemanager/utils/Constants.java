@@ -22,7 +22,8 @@ public class Constants {
     public static final String EDIT_LABEL = "Edit";
     public static final String PRINT_LABEL = "Print";
 
-    public static final String SOMETHING_WRONG_LABEL = "SOMETHING  WRONG  WITH  FILE";
+    public static final String SOMETHING_WRONG_LABEL =
+            "SOMETHING  WRONG  WITH  FILE";
     public static final String ERROR_READ_FILE = "Error: Can't read file";
     public static final String ERROR_SELECT_FILE = "Error: Can't select file";
 }

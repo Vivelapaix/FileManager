@@ -242,9 +242,7 @@ public class FileManagerController implements ExceptionHandler {
 
     private void setTableData(final File[] files, final File currentDirectory) {
         SwingUtilities.invokeLater(() -> {
-            if (view.getTable() == null) {
-                view.getTable().setModel(new FileTableModel());
-            }
+
             view.getTable().getSelectionModel()
                     .removeListSelectionListener(listSelectionListener);
             ((FileTableModel)view.getTable().getModel())

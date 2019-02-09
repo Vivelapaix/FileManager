@@ -28,8 +28,8 @@ public class TextPreview implements Preview {
 
     private static final int PREVIEW_BUFFER_SIZE = 3 * 1024;
     
-    private static final List<String> EXTENSIONS = Arrays.asList("txt", "html", "java",
-            "css", "js", "xml", "rb", "py", "csv", "c", "cpp");
+    private static final List<String> EXTENSIONS = Arrays.asList("txt", "html",
+            "java", "css", "js", "xml", "rb", "py", "csv", "c", "cpp");
     
     private static final Set<String> TEXT_EXTENSIONS = new HashSet<>(EXTENSIONS);
 
@@ -55,7 +55,8 @@ public class TextPreview implements Preview {
 
     public void show() {
 
-        SwingWorker<String, Object> previewLoader = new SwingWorker<String, Object>() {
+        SwingWorker<String, Object> previewLoader =
+                new SwingWorker<String, Object>() {
 
             @Override
             public String doInBackground() throws FileManagerException {
