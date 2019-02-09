@@ -8,7 +8,8 @@ import java.io.File;
 
 public class PreviewFactory {
     
-    public Preview createPreview(FileManagerView view, File file, ExceptionHandler exceptionHandler) {
+    public Preview createPreview(FileManagerView view, File file,
+                                 ExceptionHandler exceptionHandler) {
         if (file.isDirectory()) {
             return new EmptyPreview(view, view.getFilePreview().getNoPreview());
         }
@@ -25,7 +26,8 @@ public class PreviewFactory {
             return new TextPreview(view, view.getFilePreview().getTextPreviewScroll(),
                     view.getFilePreview().getTextPreview(), file, exceptionHandler);
         } else if (ImagePreview.acceptsExtension(fileExtension)) {
-            return new ImagePreview(view, view.getFilePreview().getImagePreview(), file, exceptionHandler);
+            return new ImagePreview(view,
+                    view.getFilePreview().getImagePreview(), file, exceptionHandler);
         }
         return new EmptyPreview(view, view.getFilePreview().getNoPreview());
     }

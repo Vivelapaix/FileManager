@@ -53,13 +53,15 @@ public class ImagePreview implements Preview {
 
     public void show() {
 
-        SwingWorker<BufferedImage, Object> previewLoader = new SwingWorker<BufferedImage, Object>() {
+        SwingWorker<BufferedImage, Object> previewLoader =
+                new SwingWorker<BufferedImage, Object>() {
 
             @Override
             public BufferedImage doInBackground() throws FileManagerException {
                 try {
                     view.getFilePreview().hidePreviews();
-                    view.getFilePreview().getNoPreview().setText(FILE_LOADING_LABEL);
+                    view.getFilePreview().getNoPreview()
+                            .setText(FILE_LOADING_LABEL);
                     return ImageIO.read(getInputStream());
                 } catch (IOException e) {
                     throw new FileManagerException(ERROR_READ_FILE, e);
@@ -87,7 +89,8 @@ public class ImagePreview implements Preview {
             previewLoader.execute();
         } else {
             view.getFilePreview().hidePreviews();
-            view.getFilePreview().getNoPreview().setText(FILE_IS_LARGE_FOR_PREVIEW_LABEL);
+            view.getFilePreview().getNoPreview()
+                    .setText(FILE_IS_LARGE_FOR_PREVIEW_LABEL);
         }
     }
 
