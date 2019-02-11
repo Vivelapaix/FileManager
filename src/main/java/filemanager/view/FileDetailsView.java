@@ -11,8 +11,8 @@ import java.awt.Dimension;
  * FileDetailsView is the class which combines the contents of current directory
  * as table, file operations on selected file and properties of selected file.
  *
- * @see FileOperationsView
- * @see FilePropertiesView
+ * @see filemanager.view.FileOperationsView
+ * @see filemanager.view.FilePropertiesView
  */
 class FileDetailsView extends JPanel {
 
