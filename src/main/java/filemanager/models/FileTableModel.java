@@ -6,6 +6,10 @@ import javax.swing.table.AbstractTableModel;
 import java.io.File;
 import java.util.Date;
 
+/**
+ * FileTableModel is the class that displays the contents of user selected
+ * directory with file properties.
+ */
 public class FileTableModel extends AbstractTableModel {
 
     private File currentDirectory;
