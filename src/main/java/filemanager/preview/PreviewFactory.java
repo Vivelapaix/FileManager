@@ -17,7 +17,7 @@ public class PreviewFactory {
      *
      * @param view FileManager main view
      * @param file user selected file
-     * @param exceptionHandler exceprion handler for errors
+     * @param exceptionHandler exception handler for errors
      * @return class depending on file type
      * @see filemanager.preview.EmptyPreview
      * @see filemanager.preview.TextPreview
