@@ -18,14 +18,25 @@ import static filemanager.utils.Constants.SIZE_LABEL;
 import static filemanager.utils.Constants.SOMETHING_WRONG_LABEL;
 import static filemanager.utils.Constants.STATUS_LABEL;
 
+/**
+ * FilePropertiesView is the class that displays main information about
+ * selected file.
+ */
 public class FilePropertiesView extends JPanel {
 
     private JLabel fileName;
     private JTextField filePath;
     private JLabel fileDate;
     private JLabel fileSize;
+    /**
+     * File status indicates state of file like OK, Loading or Error
+     * occurred while opening the file.
+     */
     private JLabel fileStatus;
 
+    /**
+     * Class constructor initializing components for file properties.
+     */
     FilePropertiesView() {
         super(new BorderLayout(4,2));
         setBorder(new EmptyBorder(0,6,0,6));

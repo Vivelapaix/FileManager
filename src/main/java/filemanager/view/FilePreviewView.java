@@ -15,6 +15,9 @@ import static filemanager.utils.Constants.IMAGE_PREVIEW_LABEL;
 import static filemanager.utils.Constants.NO_PREVIEW_LABEL;
 import static filemanager.utils.Constants.TEXT_PREVIEW_LABEL;
 
+/**
+ * FilePreviewView is the class that used for preview selected file.
+ */
 public class FilePreviewView extends JPanel {
 
     private JLabel noPreview;
@@ -22,6 +25,10 @@ public class FilePreviewView extends JPanel {
     private ImagePanel imagePreview;
     private JScrollPane textPreviewScroll;
 
+    /**
+     * Class constructor initializing panels for no preview, text preview and
+     * image preview.
+     */
     FilePreviewView() {
         super(new CardLayout(3, 3));
         setBorder(BorderFactory.createLineBorder(Color.gray));
@@ -32,19 +39,19 @@ public class FilePreviewView extends JPanel {
     }
 
     private void initPreviews() {
-        buildNoPreview();
-        buildTextPreview();
-        buildImagePreview();
+        initNoPreview();
+        initTextPreview();
+        initImagePreview();
     }
 
-    private void buildNoPreview() {
+    private void initNoPreview() {
         noPreview = new JLabel();
         noPreview.setHorizontalAlignment(JLabel.CENTER);
         noPreview.setVisible(false);
         add(noPreview, NO_PREVIEW_LABEL);
     }
 
-    private void buildTextPreview() {
+    private void initTextPreview() {
         textPreview = new JTextArea();
         textPreview.setWrapStyleWord(true);
         textPreview.setLineWrap(true);
@@ -57,12 +64,15 @@ public class FilePreviewView extends JPanel {
         add(textPreviewScroll, TEXT_PREVIEW_LABEL);
     }
 
-    private void buildImagePreview() {
+    private void initImagePreview() {
         imagePreview = new ImagePanel();
         imagePreview.setVisible(false);
         add(imagePreview, IMAGE_PREVIEW_LABEL);
     }
 
+    /**
+     * Hide all previews on panel.
+     */
     public void hidePreviews() {
         noPreview.setVisible(false);
         textPreviewScroll.setVisible(false);
