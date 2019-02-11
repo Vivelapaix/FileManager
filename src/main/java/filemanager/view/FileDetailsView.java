@@ -7,6 +7,13 @@ import javax.swing.ListSelectionModel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+/**
+ * FileDetailsView is the class which combines the contents of current directory
+ * as table, file operations on selected file and properties of selected file.
+ *
+ * @see filemanager.view.FileOperationsView
+ * @see filemanager.view.FilePropertiesView
+ */
 class FileDetailsView extends JPanel {
 
     private JTable table;
@@ -20,12 +27,16 @@ class FileDetailsView extends JPanel {
         initFileDetails();
     }
 
+    /**
+     * Class constructor initializing file table with file operations and
+     * file properties.
+     */
     private void initFileDetails() {
-        buildFileTable();
-        buildFileView();
+        initFileTable();
+        initFileView();
     }
 
-    private void buildFileTable() {
+    private void initFileTable() {
         table = new JTable();
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setAutoCreateRowSorter(true);
@@ -39,7 +50,7 @@ class FileDetailsView extends JPanel {
         add(tableScroll, BorderLayout.CENTER);
     }
 
-    private void buildFileView() {
+    private void initFileView() {
         JPanel fileView = new JPanel(new BorderLayout(3,3));
         fileOperations = new FileOperationsView();
         fileProperties = new FilePropertiesView();

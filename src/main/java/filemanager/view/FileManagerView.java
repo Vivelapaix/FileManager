@@ -12,6 +12,9 @@ import java.awt.Dimension;
 
 import static filemanager.utils.Constants.APP_NAME;
 
+/**
+ * FileManagerView is the class which is the main GUI panel of all application.
+ */
 public class FileManagerView {
 
     private JFrame frame;
@@ -21,11 +24,14 @@ public class FileManagerView {
     private FileDetailsView fileDetails;
     private FilePreviewView filePreview;
 
+    /**
+     * Class constructor initializing main frame.
+     */
     public FileManagerView() {
-        buildFrame();
+        initFrame();
     }
 
-    private void buildFrame() {
+    private void initFrame() {
         frame = new JFrame(APP_NAME);
         frame.setLayout(new BorderLayout(3, 3));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,6 +39,13 @@ public class FileManagerView {
         frame.setContentPane(getGUI());
     }
 
+    /**
+     * The method initializes view of the file system tree, view of the contents
+     * of the current directory, view of the contents of the selected file
+     * (preview).
+     *
+     * @return guiPanel the main panel of this application
+     */
     private Container getGUI() {
         guiPanel = new JPanel(new BorderLayout(3,3));
         guiPanel.setBorder(new EmptyBorder(5,5,5,5));

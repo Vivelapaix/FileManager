@@ -26,6 +26,13 @@ import java.util.List;
 
 import static filemanager.utils.Constants.ERROR_SELECT_FILE;
 
+/**
+ * FileManagerController is the class that defines
+ * tree listener, table listener and file operation button listener,
+ * controls loading, previewing files,
+ * updating the contents of the selected directory,
+ * updating the selected file properties.
+ */
 public class FileManagerController implements ExceptionHandler {
 
     private static final Logger logger =
@@ -41,8 +48,14 @@ public class FileManagerController implements ExceptionHandler {
 
     private ListSelectionListener listSelectionListener;
 
+    /**
+     * User selected file.
+     */
     private File currentFile;
 
+    /**
+     * Constructor initializing application view.
+     */
     public FileManagerController() {
         fileSystemView = FileSystemView.getFileSystemView();
         desktop = Desktop.getDesktop();
@@ -57,6 +70,9 @@ public class FileManagerController implements ExceptionHandler {
         view.getFileOperations().disableFileOperations();
     }
 
+    /**
+     * Enable buttons with system supported file actions.
+     */
     private void enableFileOperations() {
         view.getFileOperations().getOpenFile()
                 .setEnabled(desktop.isSupported(Desktop.Action.OPEN));
@@ -66,6 +82,12 @@ public class FileManagerController implements ExceptionHandler {
                 .setEnabled(desktop.isSupported(Desktop.Action.PRINT));
     }
 
+    /**
+     * Create main frame with tree listener, table listener and file operation
+     * buttons.
+     *
+     * @return frame main frame
+     */
     public JFrame createGUI() {
 
         TreeSelectionListener treeSelectionListener = tse -> {
@@ -127,6 +149,12 @@ public class FileManagerController implements ExceptionHandler {
         });
     }
 
+    /**
+     * Create message dialog with message and exception class.
+     *
+     * @param message for show
+     * @param error application exception
+     */
     public void handleException(String message, Exception error) {
         logger.error(message, error);
         JOptionPane.showMessageDialog(
@@ -138,6 +166,9 @@ public class FileManagerController implements ExceptionHandler {
         view.getFileProperties().setErrorFileStatus();
     }
 
+    /**
+     * @return last user selected file in table (in the center panel)
+     */
     private File getSelectedFile() {
         int selectedRow = view.getTable().getSelectionModel()
                 .getLeadSelectionIndex();
@@ -151,6 +182,11 @@ public class FileManagerController implements ExceptionHandler {
         return null;
     }
 
+    /**
+     * Update file properties and preview file if preview is available.
+     *
+     * @param selectedFile user selected file
+     */
     private void updateView(File selectedFile) {
 
         if (selectedFile != null && selectedFile != currentFile) {
@@ -166,6 +202,13 @@ public class FileManagerController implements ExceptionHandler {
         }
     }
 
+    /**
+     * Create preview and show it in preview panel.
+     *
+     * @param file user selected file
+     * @see filemanager.preview.PreviewFactory#createPreview(FileManagerView,
+     * File, ExceptionHandler)
+     */
     private void previewFile(File file) {
         Preview preview = previewFactory.createPreview(view, file, this);
         preview.show();
@@ -173,6 +216,12 @@ public class FileManagerController implements ExceptionHandler {
         view.getFileProperties().setOkFileStatus();
     }
 
+    /**
+     * Add subdirectories for user selected directory to node as children
+     * and set the table content.
+     *
+     * @param node user selected file or directory in tree panel.
+     */
     private void showDirectory(final DefaultMutableTreeNode node) {
         view.getTree().setEnabled(false);
         view.getFileProperties().setLoadingFileStatus();

@@ -6,8 +6,16 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import java.util.Arrays;
 
+/**
+ * FileTreeModel is the class that defines the hierarchical file tree.
+ */
 public class FileTreeModel extends DefaultTreeModel {
 
+    /**
+     * Constructor initializing system roots as children of fictive tree root.
+     *
+     * @param root not visible parent node for combining system roots
+     */
     public FileTreeModel(TreeNode root) {
         super(root);
 

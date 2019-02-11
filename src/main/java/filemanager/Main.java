@@ -7,6 +7,14 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+/**
+ * This program implements an File Manager application.
+ *
+ * The operations include opening, editing, printing, previewing and searching
+ * for files.
+ *
+ * The preview is available only for text files and images.
+ */
 class Main {
 
     private static final Logger logger = Logger.getLogger(Main.class.getName());

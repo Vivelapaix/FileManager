@@ -10,6 +10,10 @@ import java.awt.Component;
 import java.io.File;
 
 
+/**
+ * FileTreeCellRenderer is the class that specifies folder and file view in
+ * the hierarchical file system tree.
+ */
 public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
 
     @Override

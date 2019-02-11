@@ -1,5 +1,8 @@
 package filemanager.utils;
 
+/**
+ * Constants is the class that defines application constants.
+ */
 public class Constants {
     public static final String NO_PREVIEW_LABEL = "NO PREVIEW";
     public static final String TEXT_PREVIEW_LABEL = "TEXT PREVIEW";

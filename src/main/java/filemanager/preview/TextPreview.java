@@ -22,12 +22,18 @@ import java.util.Set;
 
 import static filemanager.utils.Constants.ERROR_READ_FILE;
 
+/**
+ * TextPreview is the class that displays text file preview.
+ */
 public class TextPreview implements Preview {
     
     private static final String DEFAULT_ENCODING = "UTF-8";
 
     private static final int PREVIEW_BUFFER_SIZE = 3 * 1024;
-    
+
+    /**
+     * Text file extensions.
+     */
     private static final List<String> EXTENSIONS = Arrays.asList("txt", "html",
             "java", "css", "js", "xml", "rb", "py", "csv", "c", "cpp");
     

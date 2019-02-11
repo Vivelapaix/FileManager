@@ -10,6 +10,13 @@ import static filemanager.utils.Constants.NO_PREVIEW_AVAILABLE_LABEL;
 import static filemanager.utils.Constants.NO_PREVIEW_LABEL;
 
 
+/**
+ * EmptyPreview is the class that displays no preview when the user selected
+ * file is neither text nor image.
+ *
+ * @see filemanager.preview.TextPreview#EXTENSIONS
+ * @see filemanager.preview.ImagePreview#EXTENSIONS
+ */
 public class EmptyPreview implements Preview {
     
     private final FileManagerView view;

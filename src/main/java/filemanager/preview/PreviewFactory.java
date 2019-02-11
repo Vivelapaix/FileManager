@@ -6,8 +6,23 @@ import filemanager.view.FileManagerView;
 
 import java.io.File;
 
+/**
+ * PreviewFactory is the class that is used to create empty preview,
+ * text preview and image preview.
+ */
 public class PreviewFactory {
-    
+
+    /**
+     * Create preview class depending on file type.
+     *
+     * @param view FileManager main view
+     * @param file user selected file
+     * @param exceptionHandler exception handler for errors
+     * @return class depending on file type
+     * @see filemanager.preview.EmptyPreview
+     * @see filemanager.preview.TextPreview
+     * @see filemanager.preview.ImagePreview
+     */
     public Preview createPreview(FileManagerView view, File file,
                                  ExceptionHandler exceptionHandler) {
         if (file.isDirectory()) {

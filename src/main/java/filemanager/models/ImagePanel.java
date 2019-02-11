@@ -5,6 +5,11 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 
+/**
+ * ImagePanel is the class which is intended for image rendering.
+ *
+ * @see filemanager.preview.ImagePreview#panel
+ */
 public class ImagePanel extends JLabel {
 
     private BufferedImage image;
