@@ -27,10 +27,16 @@ import static filemanager.utils.Constants.FILE_LOADING_LABEL;
 import static filemanager.utils.Constants.IMAGE_PREVIEW_LABEL;
 
 
+/**
+ * ImagePreview is the class that displays image file preview.
+ */
 public class ImagePreview implements Preview {
 
     private static final int PREVIEW_BUFFER_SIZE = 20 * 1024 * 1024;
 
+    /**
+     * Image file extensions.
+     */
     private static final List<String> EXTENSIONS = Arrays.asList("png", "jpg", "jpeg");
     
     private static final Set<String> IMAGE_EXTENSIONS = new HashSet<>(EXTENSIONS);
